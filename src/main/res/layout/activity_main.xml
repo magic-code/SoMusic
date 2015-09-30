@@ -1,44 +1,51 @@
-<FrameLayout     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <LinearLayout   android:layout_width="match_parent"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".MainActivity"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
-        <ScrollView
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/main_content_fragment"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-            <Button
+            android:layout_height="0dp" android:layout_weight="1">
+
+        </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView android:background="@mipmap/img_appwidget_album_cover_normal_4x1_9"
+                android:layout_width="wrap_content" android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content" />
+            <LinearLayout android:paddingLeft="15dp"
+                android:layout_width="0dp"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                    <TextView style="@style/min_font_black"
+                        android:id="@+id/tx_songname"
+                        android:text="有何不可"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                <TextView style="@style/min_font_hit"
+                    android:id="@+id/tx_singername"
+                    android:text="许嵩"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                </LinearLayout>
+            <ImageView android:layout_gravity="right" android:layout_marginLeft="10dp"
+                android:id="@+id/main_play" android:layout_marginRight="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hello haha"/>
-        </ScrollView>
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:orientation="horizontal">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello haha"/>
+                android:background="@mipmap/img_appwidget_play" />
+            <ImageView android:layout_gravity="right" android:layout_marginRight="10dp" android:paddingLeft="10dp"
+                android:id="@+id/main_display_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/img_artist_default" />
+        </LinearLayout>
+</LinearLayout>
 
-       </LinearLayout>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <RadioButton
-                style="@style/style_radio_tab"
-
-                android:text="我的"/>
-        </RadioGroup>
-
-    </LinearLayout>
-</FrameLayout>

@@ -5,9 +5,40 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="style_radio_tab">
+    <style name="style_radio_tab" parent="mid_font_white">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:drawableBottom">@drawable/selector_tab</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:button">@null</item>
     </style>
+    <style name="large_font_white">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="large_font_hint">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+    <style name="mid_font_white">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="min_font_hit">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="min_font_black">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="gray">#8F2B2B2B</color>
+    <color name="light_blue">#FF29B4FF</color>
+    <color name="fenge">#0FFFFFFF</color>
 </resources>

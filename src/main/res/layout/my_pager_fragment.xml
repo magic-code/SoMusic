@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <ScrollView android:id="@+id/myfg_scrview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@mipmap/img_my_top_default"
+                >
+
+                <RelativeLayout
+                    android:paddingLeft="20dp"
+                    android:paddingBottom="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/iv_userpic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@mipmap/user_default_icon"/>
+                    <TextView
+                        style="@style/large_font_white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/iv_userpic"
+                        android:layout_toRightOf="@+id/iv_userpic"
+                        android:text="@string/LoginAndRegister"/>
+                    <TextView
+                        style="@style/large_font_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/iv_userpic"
+                        android:layout_toRightOf="@+id/iv_userpic"
+                        android:text="@string/goodmusic"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <LinearLayout android:padding="10dp"
+                    android:layout_width="match_parent" android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <RelativeLayout android:gravity="center"
+                        android:layout_width="0dp" android:layout_weight="1"
+                        android:layout_height="wrap_content">
+                        <ImageView android:background="@mipmap/img_imageview_soundsearch_state_idle"
+                            android:layout_width="wrap_content" android:id="@+id/local_view"
+                            android:layout_height="wrap_content" />
+
+                        <TextView style="@style/mid_font_white"
+                            android:text="@string/localmusic"
+                            android:layout_toRightOf="@+id/local_view"
+                            android:layout_above="@+id/tx_local_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView  style="@style/min_font_hit"
+                            android:text="有100首"
+                            android:layout_toRightOf="@+id/local_view"
+                            android:id="@+id/tx_local_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+                    <RelativeLayout android:gravity="center"
+                        android:layout_width="0dp" android:layout_weight="1"
+                        android:layout_height="wrap_content">
+                        <ImageView android:background="@mipmap/img_imageview_soundsearch_state_idle"
+                            android:layout_width="wrap_content" android:id="@+id/music_download_view"
+                            android:layout_height="wrap_content" />
+                        <TextView  style="@style/min_font_hit"
+                            android:text="有100首"
+                            android:layout_toRightOf="@+id/music_download_view"
+                            android:id="@+id/tx_music_download"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView style="@style/mid_font_white"
+                            android:text="@string/musicdownload"
+                            android:layout_toRightOf="@+id/music_download_view"
+                            android:layout_above="@+id/tx_music_download"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

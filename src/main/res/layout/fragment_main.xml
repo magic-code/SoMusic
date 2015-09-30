@@ -1,0 +1,63 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="com.magic.somusic.fragment.MainFragment">
+
+    <android.support.v4.widget.DrawerLayout  android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/content_frame"
+            >
+            <android.support.v4.view.ViewPager android:id="@+id/main_fragment_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v4.view.ViewPager>
+
+
+            <LinearLayout android:id="@+id/mainfg_ll_nav"
+                android:fitsSystemWindows="true"
+                android:clipToPadding="true"
+                android:background="@color/light_blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/sliding_menu"/>
+                <RadioGroup android:id="@+id/main_fg_rg"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <RadioButton android:id="@+id/main_fg_rb_my"
+                        style="@style/style_radio_tab"
+                        android:text="@string/my"/>
+                    <RadioButton android:id="@+id/main_fg_rb_recommend"
+                        style="@style/style_radio_tab"
+                        android:text="@string/recommend"/>
+                    <RadioButton android:id="@+id/main_fg_rb_find"
+                        style="@style/style_radio_tab"
+                        android:text="@string/find"/>
+                </RadioGroup>
+                <ImageView android:layout_height="wrap_content" android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content" android:layout_marginRight="10dp"
+                    android:background="@mipmap/img_musiccircle_search_normal">
+
+                    </ImageView>
+            </LinearLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_gravity="start|center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/light_blue">
+            <include layout="@layout/slidingmenu"></include>
+        </LinearLayout>
+    </android.support.v4.widget.DrawerLayout>
+</FrameLayout>
