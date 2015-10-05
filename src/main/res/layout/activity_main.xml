@@ -1,9 +1,10 @@
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".MainActivity"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/main_content_fragment"
@@ -16,9 +17,20 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-            <ImageView android:background="@mipmap/img_appwidget_album_cover_normal_4x1_9"
-                android:layout_width="wrap_content" android:layout_marginLeft="10dp"
-                android:layout_height="wrap_content" />
+            <!--<ImageView android:background="@mipmap/img_appwidget_album_cover_normal_4x1_9"-->
+                <!--android:layout_width="wrap_content" android:layout_marginLeft="10dp"-->
+                <!--android:layout_height="wrap_content" />-->
+            <com.magic.somusic.ui.RoundProgressBar
+                android:id="@+id/main_rpb"
+                android:layout_marginLeft="10dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:roundColor="#FFFFFF"
+                app:textIsDisplay="false"
+                app:roundProgressColor="#0000FF"
+                app:textColor="#00FF00"
+
+                />
             <LinearLayout android:paddingLeft="15dp"
                 android:layout_width="0dp"
                 android:gravity="center_vertical"
@@ -26,22 +38,24 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
                     <TextView style="@style/min_font_black"
-                        android:id="@+id/tx_songname"
+                        android:id="@+id/tx_main_title"
+                        android:singleLine="true"
                         android:text="有何不可"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 <TextView style="@style/min_font_hit"
-                    android:id="@+id/tx_singername"
+                    android:singleLine="true"
+                    android:id="@+id/tx_main_artist"
                     android:text="许嵩"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-                </LinearLayout>
-            <ImageView android:layout_gravity="right" android:layout_marginLeft="10dp"
+            </LinearLayout>
+            <ImageView  android:layout_marginLeft="10dp"
                 android:id="@+id/main_play" android:layout_marginRight="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/img_appwidget_play" />
-            <ImageView android:layout_gravity="right" android:layout_marginRight="10dp" android:paddingLeft="10dp"
+            <ImageView  android:layout_marginRight="10dp" android:paddingLeft="10dp"
                 android:id="@+id/main_display_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -44,7 +44,7 @@ public class MainFragment extends Fragment {
         radioGroup.check(R.id.main_fg_rb_my);
         ll_nav = (LinearLayout) view.findViewById(R.id.mainfg_ll_nav);
         m_viewPager = (ViewPager) view.findViewById(R.id.main_fragment_pager);
-        m_viewPager.setAdapter(new MyPageAdapter(this.getActivity().getSupportFragmentManager()));
+        m_viewPager.setAdapter(new MyPageAdapter(getChildFragmentManager()));
         m_viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -104,6 +104,7 @@ public class MainFragment extends Fragment {
                 ll_nav.setBackgroundColor(Color.argb((0x4f+y), 0x29, 0xb4, 0xff));
             }
         });*/
+
         return view;
     }
 

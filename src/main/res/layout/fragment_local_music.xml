@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical"
+    tools:context="com.magic.somusic.fragment.LocalMusicFragment">
+    <RelativeLayout android:gravity="center_vertical" android:background="@color/light_blue"
+        android:layout_width="match_parent"
+        android:fitsSystemWindows="true" android:clipToPadding="true"
+        android:layout_height="wrap_content">
+        <LinearLayout android:id="@+id/ll_back"
+            android:layout_width="wrap_content" android:orientation="horizontal"
+            android:layout_height="wrap_content" android:gravity="center_vertical">
+            <ImageView android:src="@mipmap/img_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView style="@style/mid_font_white"
+                android:text="@string/localmusic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <ImageView android:id="@+id/iv_local_search"
+           android:layout_toLeftOf="@+id/iv_local_popup_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:background="@mipmap/img_musiccircle_search" />
+        <ImageView android:id="@+id/iv_local_popup_menu"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content" android:layout_gravity="right|center_vertical"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/img_popup_menu"/>
+    </RelativeLayout>
+
+
+    <RadioGroup android:paddingTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton style="@style/style_radio_tab"
+            android:textColor="@color/black"
+            android:text="@string/song"/>
+        <RadioButton style="@style/style_radio_tab"
+            android:textColor="@color/black"
+            android:text="@string/artist"/>
+        <RadioButton style="@style/style_radio_tab"
+            android:textColor="@color/black"
+            android:text="@string/album"/>
+        <RadioButton style="@style/style_radio_tab"
+            android:textColor="@color/black"
+            android:text="@string/direction"/>
+    </RadioGroup>
+    <android.support.v4.view.ViewPager android:id="@+id/vp_local_music"
+        android:layout_height="0dp" android:layout_weight="1"
+        android:layout_width="match_parent">
+
+    </android.support.v4.view.ViewPager>
+
+</LinearLayout>

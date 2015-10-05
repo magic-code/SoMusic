@@ -48,48 +48,51 @@
             </LinearLayout>
             <LinearLayout android:layout_width="match_parent" android:orientation="vertical"
                 android:layout_height="wrap_content">
-                <LinearLayout android:padding="10dp"
+                <LinearLayout
                     android:layout_width="match_parent" android:orientation="horizontal"
                     android:layout_height="wrap_content">
-                    <RelativeLayout android:gravity="center"
-                        android:layout_width="0dp" android:layout_weight="1"
-                        android:layout_height="wrap_content">
-                        <ImageView android:background="@mipmap/img_imageview_soundsearch_state_idle"
-                            android:layout_width="wrap_content" android:id="@+id/local_view"
-                            android:layout_height="wrap_content" />
 
-                        <TextView style="@style/mid_font_white"
-                            android:text="@string/localmusic"
-                            android:layout_toRightOf="@+id/local_view"
-                            android:layout_above="@+id/tx_local_count"
-                            android:layout_width="wrap_content"
+                        <LinearLayout android:gravity="center"
+                            android:layout_width="0dp" android:orientation="horizontal"
+                            android:layout_height="wrap_content" android:layout_weight="1">
+                            <ImageView android:background="@mipmap/img_imageview_soundsearch_state_idle"
+                            android:layout_width="wrap_content" android:id="@+id/local_view"
+                            android:layout_toLeftOf="@+id/tx_local_count"
                             android:layout_height="wrap_content" />
-                        <TextView  style="@style/min_font_hit"
-                            android:text="有100首"
-                            android:layout_toRightOf="@+id/local_view"
-                            android:id="@+id/tx_local_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </RelativeLayout>
-                    <RelativeLayout android:gravity="center"
-                        android:layout_width="0dp" android:layout_weight="1"
-                        android:layout_height="wrap_content">
+                            <LinearLayout android:id="@+id/ll_local_music"
+                                android:layout_width="0dp" android:layout_weight="1"
+                                android:layout_height="wrap_content" android:orientation="vertical">
+                                <TextView style="@style/mid_font_white"
+                                    android:text="@string/localmusic"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                                <TextView  style="@style/min_font_hit"
+                                    android:text="有100首"
+                                    android:id="@+id/tx_local_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                             </LinearLayout>
+                        </LinearLayout>
+                    <LinearLayout android:gravity="center"
+                        android:layout_width="0dp" android:orientation="horizontal"
+                        android:layout_height="wrap_content" android:layout_weight="1">
                         <ImageView android:background="@mipmap/img_imageview_soundsearch_state_idle"
                             android:layout_width="wrap_content" android:id="@+id/music_download_view"
                             android:layout_height="wrap_content" />
-                        <TextView  style="@style/min_font_hit"
-                            android:text="有100首"
-                            android:layout_toRightOf="@+id/music_download_view"
-                            android:id="@+id/tx_music_download"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <TextView style="@style/mid_font_white"
-                            android:text="@string/musicdownload"
-                            android:layout_toRightOf="@+id/music_download_view"
-                            android:layout_above="@+id/tx_music_download"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </RelativeLayout>
+                        <LinearLayout
+                            android:layout_width="0dp" android:layout_weight="1"
+                            android:layout_height="wrap_content" android:orientation="vertical">
+                            <TextView style="@style/mid_font_white"
+                                android:text="@string/musicdownload"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                            <TextView  style="@style/min_font_hit"
+                                android:text="有100首"
+                                android:id="@+id/tx_music_download"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

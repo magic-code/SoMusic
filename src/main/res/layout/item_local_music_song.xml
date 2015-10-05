@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <TextView android:id="@+id/tx_item_local_num"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        style="@style/large_font_hint"
+        android:text="32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout android:orientation="vertical" android:layout_toRightOf="@+id/tx_item_local_num"
+        android:layout_width="wrap_content" android:paddingLeft="15dp"
+        android:layout_height="wrap_content" android:layout_toLeftOf="@+id/iv_item_local_menu">
+        <TextView android:id="@+id/tx_item_local_title"
+            android:singleLine="true"
+            style="@style/min_font_black"
+            android:text="猜不透"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView android:id="@+id/tx_item_local_artist"
+            android:singleLine="true"
+            style="@style/min_font_hit"
+            android:text="丁当"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+     </LinearLayout>
+    <ImageView android:id="@+id/iv_item_local_menu"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/img_right_menu_arrow_down"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

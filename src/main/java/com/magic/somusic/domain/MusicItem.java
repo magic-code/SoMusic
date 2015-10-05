@@ -6,12 +6,11 @@ package com.magic.somusic.domain;
 public class MusicItem {
     private int _id;
     private String filename;
-    private String name;
-    private int time;
-    private String singer;
-    private String special;
+    private String title;
+    private long duration;
+    private String artist;
+    private String album;
     private int collect;
-    private String direction;
 
     public int get_id() {
         return _id;
@@ -29,36 +28,36 @@ public class MusicItem {
         this.filename = filename;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public int getTime() {
-        return time;
+    public long getDuration() {
+        return duration;
     }
 
-    public void setTime(int time) {
-        this.time = time;
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 
-    public String getSinger() {
-        return singer;
+    public String getArtist() {
+        return artist;
     }
 
-    public void setSinger(String singer) {
-        this.singer = singer;
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
-    public String getSpecial() {
-        return special;
+    public String getAlbum() {
+        return album;
     }
 
-    public void setSpecial(String special) {
-        this.special = special;
+    public void setAlbum(String album) {
+        this.album = album;
     }
 
     public int getCollect() {
@@ -69,11 +68,5 @@ public class MusicItem {
         this.collect = collect;
     }
 
-    public String getDirection() {
-        return direction;
-    }
 
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
 }

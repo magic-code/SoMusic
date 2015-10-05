@@ -15,6 +15,10 @@
     <string name="recentplay">最近播放</string>
     <string name="hasdownload">下载已完成</string>
     <string name="nodownload">没有下载任务</string>
+    <string name="song">歌曲</string>
+    <string name="artist">歌手</string>
+    <string name="album">专辑</string>
+    <string name="direction">文件夹</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

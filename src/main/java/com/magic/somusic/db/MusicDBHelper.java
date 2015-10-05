@@ -2,10 +2,13 @@ package com.magic.somusic.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.magic.somusic.domain.MusicItem;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2015/9/28.
@@ -16,9 +19,9 @@ public class MusicDBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME="somusic";
     private static final int DB_VERSION = 1;
     private static final String TABLE_LOCAL_LIST = "local_list";
-    private static final String CREATE_TABLE_LOCAL_LIST="CREATE TABLE "+TABLE_LOCAL_LIST+" (_id INTEGER PRIMARY KEY AUTOINCREMENT" +
-            ",name VARCHAR(100),time INTEGER,singer VARCHAR(50),special VARCHAR(100)" +
-            "filename VARCHAR(100),direction VARCHAR(100),collect INTEGER";
+    private static final String CREATE_TABLE_LOCAL_LIST="CREATE TABLE "+TABLE_LOCAL_LIST+" (_id INTEGER PRIMARY KEY" +
+            ",title VARCHAR(100),duration INTEGER,artist VARCHAR(50),album VARCHAR(100)," +
+            "filename VARCHAR(100),collect INTEGER)";
     private MusicDBHelper(Context context){
         super(context,DB_NAME,null,DB_VERSION);
     }
@@ -40,16 +43,48 @@ public class MusicDBHelper extends SQLiteOpenHelper {
     }
     public void save(MusicItem item){
        SQLiteDatabase db =  _instance.getWritableDatabase();
-        ContentValues content = new ContentValues();
-        content.put("_id",item.get_id());
-        content.put("name",item.getName());
-        content.put("filename",item.getFilename());
-        content.put("singer",item.getSinger());
-        content.put("special",item.getSpecial());
-        content.put("direction",item.getDirection());
-        content.put("time",item.getTime());
-        content.put("collect",item.getCollect());
+        Cursor cursor = db.query(TABLE_LOCAL_LIST, new String[]{"_id"}, "_id=?", new String[]{String.valueOf(item.get_id())}, null, null, null);
+        if (cursor.getCount()<=0) {
+            ContentValues content = new ContentValues();
+            content.put("_id", item.get_id());
+            content.put("title", item.getTitle());
+            content.put("filename", item.getFilename());
+            content.put("artist", item.getArtist());
+            content.put("album", item.getAlbum());
+            content.put("duration", item.getDuration());
+            content.put("collect", item.getCollect());
 
-       db.insert(TABLE_LOCAL_LIST,null,content);
+            db.insert(TABLE_LOCAL_LIST, null, content);
+            db.close();
+        }
     }
+
+    public ArrayList<MusicItem> query(){
+        SQLiteDatabase db =  _instance.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_LOCAL_LIST,null,null,null, null, null, null);
+        ArrayList<MusicItem> list=null;
+        if(cursor!=null) {
+            list = new ArrayList<MusicItem>();
+            while (cursor.moveToNext()) {
+                MusicItem item = new MusicItem();
+                int id = cursor.getInt(cursor.getColumnIndex("_id"));
+                int  collecte = cursor.getInt(cursor.getColumnIndex("collect"));
+                long duration = cursor.getLong(cursor.getColumnIndex("duration"));
+                String title = cursor.getString(cursor.getColumnIndex("title"));
+                String filename = cursor.getString(cursor.getColumnIndex("filename"));
+                String artist = cursor.getString(cursor.getColumnIndex("artist"));
+                String album = cursor.getString(cursor.getColumnIndex("album"));
+                item.set_id(id);
+                item.setTitle(title);
+                item.setArtist(artist);
+                item.setAlbum(album);
+                item.setDuration(duration);
+                item.setFilename(filename);
+                item.setCollect(collecte);
+                list.add(item);
+            }
+        }
+        return list;
+    }
+
 }
