@@ -16,7 +16,7 @@ public class Config {
         public static final int STATE_PAUSE = 3;
     }
     /**播放模式*/
-    public static int PLAY_MODEL;
+
     public class PlayModel{
         /**单曲循环*/
         public static final int SINGLE_REPEAT = 1;
@@ -31,7 +31,7 @@ public class Config {
     }
 
     /**播放列表*/
-    public static int PLAY_LIST;
+
     public class PlayList{
         /**本地列表*/
         public static final int LIST_LOCAL = 1;
@@ -58,5 +58,31 @@ public class Config {
 
         /**播放歌曲改变广播*/
         public static final String MUSIC_CHANGE = "com.magic.somusic.music_change";
+
+        /**播放广播（notification）*/
+        public static final String MUSIC_PLAY = "com.magic.somusic.music_play";
+        /**暂停广播（notification）*/
+        public static final String MUSIC_PAUSE = "com.magic.somusic.music_pause";
+        /**下一首广播（notification）*/
+        public static final String MUSIC_NEXT = "com.magic.somusic.music_next";
+        /**上一首广播（notification）*/
+        public static final String MUSIC_PREVIOUS = "com.magic.somusic.music_previous";
+        /**退出广播（notification）*/
+        public static final String APP_EXIT = "com.magic.somusic.exit";
     }
+    /**请求响应码*/
+    public class Code{
+        public static final int REQ_MUSIC_PLAY = 1;
+        public static final int REQ_MUSIC_PAUSE = 2;
+        public static final int REQ_MUSIC_NEXT = 3;
+        public static final int REQ_MUSIC_PREVIOUS = 4;
+        public static final int REQ_MUSIC_EXIT = 0;
+        public static final int REQ_TO_ACTIVITY = 5;
+    }
+//    public class Setting{
+//        public static final String SHAREPREFENS = "somusic";
+//        public static final String LAST_LIST = "lastlist";
+//        public static final String LAST_MUSIC = "lastmusic";
+//        public static final String LAST_MUSIC_SEC = "lastmusicsec";
+//    }
 }

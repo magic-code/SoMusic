@@ -19,12 +19,32 @@ public class Player {
     private static Player mPlayer = new Player();
     private MediaPlayer mediaPlayer;
     private Context context;
-    private int model;
+    private int model=Config.PlayModel.LIST_REPEAT_MODEL;
     private int playing = Config.PlayState.STATE_STOP;
     private ArrayList<MusicItem> list;
     private int position;
-    public static Player getPlayer(){
+    private boolean flag = false;//app是否已经运行状态，使进入activity中PlayMusicService init时不要重复加载上次的播放数据
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
+    public void setList(ArrayList<MusicItem> list){
+        this.list = list;
+    }
+    public void setPosition(int position){this.position = position;}
+    public static Player getPlayer(Context context){
+        mPlayer.context = context;
         return mPlayer;
+    }
+    public void play(){
+        if (list!=null && position>=0 && list.size()>0){
+            play(context,list,position%list.size());
+        }
     }
     public MusicItem play(final Context context, final ArrayList<MusicItem> list, final int position){
         if (playing==Config.PlayState.STATE_PLAYING){
@@ -111,7 +131,8 @@ public class Player {
         }else{
             position = (position+list.size()+1)%list.size();
             musicItem = list.get(position);
-            mediaPlayer.reset();    //先停止上一首
+            if (mediaPlayer!=null)
+                mediaPlayer.reset();    //先停止上一首
             play(context,list,position);
         }
         return musicItem;
@@ -163,11 +184,14 @@ public class Player {
      * @param section 为-1表示取当前位置的音乐
      * */
     public MusicItem getMusic(int section){
-        if (section==-1){
-            return list.get(position);
-        }else{
-            return list.get(section);
+        if(list!=null) {
+            if (section == -1) {
+                return list.get(position);
+            } else {
+                return list.get(section);
+            }
         }
+        return null;
     }
     /**获取当前播放音乐的位置时间*/
     public int getCurrentDuration(){
@@ -182,5 +206,8 @@ public class Player {
             return mediaPlayer.getDuration();
         }
         return 0;
+    }
+    public int getPlaying(){
+        return playing;
     }
  }

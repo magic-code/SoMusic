@@ -19,7 +19,14 @@
     <string name="artist">歌手</string>
     <string name="album">专辑</string>
     <string name="direction">文件夹</string>
+    <string name="scanmusic">扫描音乐</string>
+    <string name="totalscan">共扫描到</string>
+    <string name="nummusic">首音乐</string>
+    <string name="scanerror">扫描音乐出错，请确定存储卡已经插好</string>
+    <string name="enterApp">进入SO音乐</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_first_install">FirstInstallActivity</string>
 </resources>

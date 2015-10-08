@@ -53,6 +53,7 @@
                     android:layout_height="wrap_content">
 
                         <LinearLayout android:gravity="center"
+                            android:background="@drawable/img_share_background_dialog_button_positive_normal"
                             android:layout_width="0dp" android:orientation="horizontal"
                             android:layout_height="wrap_content" android:layout_weight="1">
                             <ImageView android:background="@mipmap/img_imageview_soundsearch_state_idle"
@@ -74,6 +75,7 @@
                              </LinearLayout>
                         </LinearLayout>
                     <LinearLayout android:gravity="center"
+                        android:background="@drawable/img_share_background_dialog_button_positive_normal"
                         android:layout_width="0dp" android:orientation="horizontal"
                         android:layout_height="wrap_content" android:layout_weight="1">
                         <ImageView android:background="@mipmap/img_imageview_soundsearch_state_idle"

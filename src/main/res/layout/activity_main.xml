@@ -26,7 +26,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 app:roundColor="#FFFFFF"
-                app:textIsDisplay="false"
+                app:textIsDisplay="true"
                 app:roundProgressColor="#0000FF"
                 app:textColor="#00FF00"
 
@@ -51,15 +51,15 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
             <ImageView  android:layout_marginLeft="10dp"
-                android:id="@+id/main_play" android:layout_marginRight="15dp"
+                android:id="@+id/iv_main_play" android:layout_marginRight="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/img_appwidget_play" />
+                android:src="@mipmap/img_appwidget_play" />
             <ImageView  android:layout_marginRight="10dp" android:paddingLeft="10dp"
                 android:id="@+id/main_display_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/img_artist_default" />
+                android:src="@mipmap/img_artist_default" />
         </LinearLayout>
 </LinearLayout>
 

@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:gravity="center"
+    android:background="@mipmap/guide_background"
+    tools:context="com.magic.somusic.FirstInstallActivity">
+
+    <TextView android:background="@drawable/img_background_appwidget_bottom_4x4"
+        android:id="@+id/tx_first_scan_music"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        android:singleLine="true"
+        android:text="@string/scanmusic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView android:id="@+id/tx_first_scan_tip"
+        android:gravity="center"
+        android:layout_alignBottom="@+id/tx_first_scan_music"
+        style="@style/large_font_white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

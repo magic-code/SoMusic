@@ -38,7 +38,7 @@
 
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
-    <color name="gray">#8F2B2B2B</color>
+    <color name="gray">#8FABABAB</color>
     <color name="light_blue">#FF29B4FF</color>
     <color name="fenge">#0FFFFFFF</color>
 </resources>
