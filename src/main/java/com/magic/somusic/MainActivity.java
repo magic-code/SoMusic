@@ -20,18 +20,24 @@ import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
+import com.magic.somusic.adapter.SlideControlAdapter;
+import com.magic.somusic.db.MusicDBHelper;
 import com.magic.somusic.domain.MusicItem;
 import com.magic.somusic.fragment.LocalMusicFragment;
 import com.magic.somusic.fragment.MainFragment;
 import com.magic.somusic.services.PlayMusicService;
 import com.magic.somusic.services.ScanMusicService;
+import com.magic.somusic.ui.MyViewPager;
 import com.magic.somusic.ui.RoundProgressBar;
 
 import java.util.ArrayList;
@@ -45,6 +51,8 @@ public class MainActivity extends FragmentActivity {
     private ImageView mPlayPause;
     private RoundProgressBar roundProgressBar;
     private MusicChangeReciver musicChangeReciver;
+    private MyViewPager vp_control;
+    private SlideControlAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,17 +71,48 @@ public class MainActivity extends FragmentActivity {
         Intent intent = new Intent();
         intent.setClass(this,ScanMusicService.class);
         startService(intent);
-        txTitle = (TextView) findViewById(R.id.tx_main_title);
-        txArtist = (TextView) findViewById(R.id.tx_main_artist);
-        roundProgressBar = (RoundProgressBar) findViewById(R.id.main_rpb);
+       // txTitle = (TextView) findViewById(R.id.tx_main_title);
+        //txArtist = (TextView) findViewById(R.id.tx_main_artist);
+        //roundProgressBar = (RoundProgressBar) findViewById(R.id.main_rpb);
         //roundProgressBar.setProgress(50);
-        initRoundProgress();
+        //initRoundProgress();
         IntentFilter filter = new IntentFilter(Config.Broadcast.MUSIC_CHANGE);
         registerReceiver(new MusicChangeReciver(),filter);
         mPlayPause = (ImageView) findViewById(R.id.iv_main_play);
         mPlayPause.setOnClickListener(new PlayAndPauseClickListener());
+        vp_control = (MyViewPager) findViewById(R.id.vp_main_control);
+        adapter = new SlideControlAdapter(this,musicService);
+        vp_control.setOffscreenPageLimit(3);
+        vp_control.setAdapter(adapter);
+        vp_control.setCurrentItem(1);
 
+        vp_control.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    MusicItem item = musicService.previous();
+                    vp_control.setCurrentItem(1,false);
+                } else if (position == 2) {
+                    MusicItem item = musicService.next();
+                    vp_control.setCurrentItem(1,false);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        roundProgressBar = (RoundProgressBar) adapter.getView(1).findViewById(R.id.main_rpb);
+        txTitle = (TextView) adapter.getView(1).findViewById(R.id.tx_main_title);
+        txArtist = (TextView) adapter.getView(1).findViewById(R.id.tx_main_artist);
+
+        initRoundProgress();
     }
 
     class PlayAndPauseClickListener implements View.OnClickListener {
@@ -128,11 +167,12 @@ public class MainActivity extends FragmentActivity {
             roundProgressBar.setProgress(msg.arg2);
             mProgressBar.post(mProgressThread);
             if (musicService!=null){
-                MusicItem item = musicService.getMusic(-1);
-                if (item!=null) {
-                    txTitle.setText(item.getTitle());
-                    txArtist.setText(item.getArtist());
-                }
+//                MusicItem item = musicService.getMusic(musicService.getCurrentPos());
+//                if (item!=null) {
+//                    txTitle.setText(item.getTitle());
+//                    txArtist.setText(item.getArtist());
+//                }
+                updatePage();
                 if (musicService.getPlaying()==Config.PlayState.STATE_PLAYING)
                     mPlayPause.setImageResource(R.mipmap.img_appwidget_pause);
                 else{
@@ -177,17 +217,42 @@ public class MainActivity extends FragmentActivity {
          //txTitle.setText(item.getTitle());
          //txArtist.setText(item.getArtist());
     }
+    public void updatePage(){
+        View pview = adapter.getView(0);
+        View nview = adapter.getView(2);
+        View cview = adapter.getView(1);
+        TextView cTitle = (TextView) cview.findViewById(R.id.tx_main_title);
+        TextView cArtist = (TextView) cview.findViewById(R.id.tx_main_artist);
+
+        TextView pTitle = (TextView) pview.findViewById(R.id.tx_main_title);
+        TextView pArtist = (TextView) pview.findViewById(R.id.tx_main_artist);
+        TextView nTitle = (TextView) nview.findViewById(R.id.tx_main_title);
+        TextView nArtist = (TextView) nview.findViewById(R.id.tx_main_artist);
+        int pos = musicService.getCurrentPos();
+        MusicItem pItem = musicService.getMusic(pos - 1);
+        MusicItem nItem = musicService.getMusic(pos+1);
+        MusicItem cItem = musicService.getMusic(pos);
+        cTitle.setText(cItem.getTitle());
+        cArtist.setText(cItem.getArtist());
+
+        pTitle.setText(pItem.getTitle());
+        pArtist.setText(pItem.getArtist());
+        nTitle.setText(nItem.getTitle());
+        nArtist.setText(nItem.getArtist());
+    }
     class MusicChangeReciver extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
-             MusicItem item = musicService.getMusic(-1);
-            txTitle.setText(item.getTitle());
-            txArtist.setText(item.getArtist());
+             //MusicItem item = musicService.getMusic(musicService.getCurrentPos());
+            //txTitle.setText(item.getTitle());
+            //txArtist.setText(item.getArtist());
             if (musicService.getPlaying()==Config.PlayState.STATE_PLAYING){
                 mPlayPause.setImageResource(R.mipmap.img_appwidget_pause);
             }else{
                 mPlayPause.setImageResource(R.mipmap.img_appwidget_play);
             }
+            //updatePage();
+            //vp_control.getAdapter().notifyDataSetChanged();
             //showNotification(item,musicService.getPlaying());
         }
     }

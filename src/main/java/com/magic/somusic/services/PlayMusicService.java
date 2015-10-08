@@ -120,8 +120,9 @@ public class PlayMusicService extends Service {
     public void setModel(int model){
         mPlayer.setModel(model);
     }
-    /**@param  sec -表示取当前音乐*/
-    public MusicItem getMusic(int sec){
+    public int getCurrentPos(){return mPlayer.getPos();}
+    /**@param  sec -5表示取当前音乐*/
+    public MusicItem getMusic(Integer sec){
         return mPlayer.getMusic(sec);
     }
     public int getPlaying(){
@@ -167,12 +168,14 @@ public class PlayMusicService extends Service {
         remoteViews.setOnClickPendingIntent(R.id.iv_notification_next,nextPIntent);
         remoteViews.setOnClickPendingIntent(R.id.iv_notification_play,playPIntent);
         remoteViews.setOnClickPendingIntent(R.id.iv_notification_exit,exitPIntent);
+
         builder.setSmallIcon(R.mipmap.img_notification_logo);
         builder.setContent(remoteViews);
         Intent aintent = new Intent(this,MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this,Config.Code.REQ_TO_ACTIVITY,aintent,PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
         Notification notification = builder.build();
+        notification.flags = Notification.FLAG_NO_CLEAR;
         manager.notify(1,notification);
     }
 
@@ -220,7 +223,7 @@ public class PlayMusicService extends Service {
             }else if (action.equals(Config.Broadcast.MUSIC_PREVIOUS)){
                 PlayMusicService.this.previous();
             }
-            showNotification(PlayMusicService.this.getMusic(-1), PlayMusicService.this.getPlaying());
+            showNotification(PlayMusicService.this.getMusic(getCurrentPos()), PlayMusicService.this.getPlaying());
         }
     }
 }

@@ -183,12 +183,15 @@ public class Player {
     /**取得列表中某一首音乐的信息
      * @param section 为-1表示取当前位置的音乐
      * */
-    public MusicItem getMusic(int section){
+    public MusicItem getMusic(Integer section){
         if(list!=null) {
-            if (section == -1) {
+            if (section == -5){
                 return list.get(position);
+            }
+            if (section == -1) {
+                return list.get(list.size()-1);
             } else {
-                return list.get(section);
+                return list.get(section%list.size());
             }
         }
         return null;
@@ -210,4 +213,8 @@ public class Player {
     public int getPlaying(){
         return playing;
     }
- }
+
+    public int getPos() {
+        return position;
+    }
+}

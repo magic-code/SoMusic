@@ -12,44 +12,51 @@
             android:layout_height="0dp" android:layout_weight="1">
 
         </FrameLayout>
-        <LinearLayout
+
+        <LinearLayout android:background="#2f29b4ff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
+
+            <com.magic.somusic.ui.MyViewPager android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/vp_main_control">
+            </com.magic.somusic.ui.MyViewPager>
             <!--<ImageView android:background="@mipmap/img_appwidget_album_cover_normal_4x1_9"-->
                 <!--android:layout_width="wrap_content" android:layout_marginLeft="10dp"-->
                 <!--android:layout_height="wrap_content" />-->
-            <com.magic.somusic.ui.RoundProgressBar
-                android:id="@+id/main_rpb"
-                android:layout_marginLeft="10dp"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:roundColor="#FFFFFF"
-                app:textIsDisplay="true"
-                app:roundProgressColor="#0000FF"
-                app:textColor="#00FF00"
+            <!--<com.magic.somusic.ui.RoundProgressBar-->
+                <!--android:id="@+id/main_rpb"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--app:roundColor="#FFFFFF"-->
+                <!--app:textIsDisplay="true"-->
+                <!--app:roundProgressColor="#0000FF"-->
+                <!--app:textColor="#00FF00"-->
 
-                />
-            <LinearLayout android:paddingLeft="15dp"
-                android:layout_width="0dp"
-                android:gravity="center_vertical"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                    <TextView style="@style/min_font_black"
-                        android:id="@+id/tx_main_title"
-                        android:singleLine="true"
-                        android:text="有何不可"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                <TextView style="@style/min_font_hit"
-                    android:singleLine="true"
-                    android:id="@+id/tx_main_artist"
-                    android:text="许嵩"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                <!--/>-->
+            <!--<LinearLayout android:paddingLeft="15dp"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:orientation="vertical">-->
+                    <!--<TextView style="@style/min_font_black"-->
+                        <!--android:id="@+id/tx_main_title"-->
+                        <!--android:singleLine="true"-->
+                        <!--android:text="有何不可"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content" />-->
+                <!--<TextView style="@style/min_font_hit"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:id="@+id/tx_main_artist"-->
+                    <!--android:text="许嵩"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</LinearLayout>-->
             <ImageView  android:layout_marginLeft="10dp"
                 android:id="@+id/iv_main_play" android:layout_marginRight="15dp"
                 android:layout_width="wrap_content"
@@ -61,5 +68,7 @@
                 android:layout_height="wrap_content"
                 android:src="@mipmap/img_artist_default" />
         </LinearLayout>
+
+
 </LinearLayout>
 

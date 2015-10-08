@@ -1,0 +1,274 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x000000005e9d3639, pid=8572, tid=8540
+#
+# JRE version: Java(TM) SE Runtime Environment (8.0_31-b13) (build 1.8.0_31-b13)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.31-b07 mixed mode windows-amd64 compressed oops)
+# Problematic frame:
+# V  [jvm.dll+0xb3639]
+#
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.java.com/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000002760800):  JavaThread "main" [_thread_in_vm, id=8540, stack(0x0000000002660000,0x0000000002760000)]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x00000000a4ef6458
+
+Registers:
+RAX=0x000000010007a428, RBX=0x0000000000000001, RCX=0x0000000000000200, RDX=0x0000000000000018
+RSP=0x000000000275c8d0, RBP=0x000000000275c9d0, RSI=0x0000000002760800, RDI=0x00000000a4ef6440
+R8 =0x000000010007a428, R9 =0x0000000014a3dcd8, R10=0x0000000014a3dcd8, R11=0x0000000000000003
+R12=0x000000000275cab0, R13=0x0000000002760800, R14=0x0000000016828d50, R15=0x000000000275d450
+RIP=0x000000005e9d3639, EFLAGS=0x0000000000010246
+
+Top of Stack: (sp=0x000000000275c8d0)
+0x000000000275c8d0:   000000000275d450 000000000275c980
+0x000000000275c8e0:   0000000000000000 0000000002760800
+0x000000000275c8f0:   0000000002760800 0000000002278670
+0x000000000275c900:   000000000227eee0 000000000227eef8
+0x000000000275c910:   000000000227efc8 00000000000000d8
+0x000000000275c920:   000000000275f7a8 000000000275cc00
+0x000000000275c930:   000000000227eef0 000000005e9d04f4
+0x000000000275c940:   000000000227eef8 000000000227eef0
+0x000000000275c950:   000000000227eef8 000000000275cc00
+0x000000000275c960:   0000000002760800 0000000000000001
+0x000000000275c970:   0000000002760800 0000000002760800
+0x000000000275c980:   0000000014a9bad8 0000000002760800
+0x000000000275c990:   0000000016828d50 0000000002760ca0
+0x000000000275c9a0:   0000000002761078 00000000000003d8
+0x000000000275c9b0:   fffffffffffffffe 0000000014a9bad8
+0x000000000275c9c0:   0000000000000000 0000000002760800 
+
+Instructions: (pc=0x000000005e9d3639)
+0x000000005e9d3619:   53 bb 00 00 48 89 7b 08 48 89 73 10 4c 89 73 18
+0x000000005e9d3629:   e9 8f 06 00 00 41 8b 50 0c 48 8b bd b0 00 00 00
+0x000000005e9d3639:   48 39 04 3a 0f 84 cf 00 00 00 83 fa 18 75 21 48
+0x000000005e9d3649:   8b d0 48 8b cf e8 bd 21 06 00 48 8b bd b0 00 00 
+
+
+Register to memory mapping:
+
+RAX=0x000000010007a428 is pointing into metadata
+RBX=0x0000000000000001 is an unknown value
+RCX=0x0000000000000200 is an unknown value
+RDX=0x0000000000000018 is an unknown value
+RSP=0x000000000275c8d0 is pointing into the stack for thread: 0x0000000002760800
+RBP=0x000000000275c9d0 is pointing into the stack for thread: 0x0000000002760800
+RSI=0x0000000002760800 is a thread
+RDI=0x00000000a4ef6440 is an unknown value
+R8 =0x000000010007a428 is pointing into metadata
+R9 ={method} {0x0000000014a3dce0} 'getLabel' '()I' in 'com/android/dx/util/LabeledItem'
+R10={method} {0x0000000014a3dce0} 'getLabel' '()I' in 'com/android/dx/util/LabeledItem'
+R11=0x0000000000000003 is an unknown value
+R12=0x000000000275cab0 is pointing into the stack for thread: 0x0000000002760800
+R13=0x0000000002760800 is a thread
+R14=0x0000000016828d50 is an unknown value
+R15=0x000000000275d450 is pointing into the stack for thread: 0x0000000002760800
+
+
+Stack: [0x0000000002660000,0x0000000002760000],  sp=0x000000000275c8d0,  free space=1010k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0xb3639]
+V  [jvm.dll+0xb4c57]
+V  [jvm.dll+0xb547a]
+V  [jvm.dll+0xb59e5]
+V  [jvm.dll+0x21569e]
+V  [jvm.dll+0x2168c7]
+V  [jvm.dll+0x217446]
+V  [jvm.dll+0x217d67]
+C  0x00000000028a619e
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+v  ~RuntimeStub::resolve_virtual_call
+J 487 C1 com.android.dx.util.LabeledList.set(ILcom/android/dx/util/LabeledItem;)V (45 bytes) @ 0x0000000002a9622c [0x0000000002a95c00+0x62c]
+j  com.android.dx.rop.code.BasicBlockList.set(ILcom/android/dx/rop/code/BasicBlock;)V+3
+j  com.android.dx.ssa.back.SsaToRop.convertBasicBlocks()Lcom/android/dx/rop/code/BasicBlockList;+118
+j  com.android.dx.ssa.back.SsaToRop.convert()Lcom/android/dx/rop/code/RopMethod;+64
+j  com.android.dx.ssa.back.SsaToRop.convertToRopMethod(Lcom/android/dx/ssa/SsaMethod;Z)Lcom/android/dx/rop/code/RopMethod;+9
+j  com.android.dx.ssa.Optimizer.optimize(Lcom/android/dx/rop/code/RopMethod;IZZLcom/android/dx/rop/code/TranslationAdvice;Ljava/util/EnumSet;)Lcom/android/dx/rop/code/RopMethod;+30
+j  com.android.dx.ssa.Optimizer.optimize(Lcom/android/dx/rop/code/RopMethod;IZZLcom/android/dx/rop/code/TranslationAdvice;)Lcom/android/dx/rop/code/RopMethod;+12
+j  com.android.dx.dex.cf.CfTranslator.processMethods(Lcom/android/dx/cf/direct/DirectClassFile;Lcom/android/dx/dex/cf/CfOptions;Lcom/android/dx/dex/DexOptions;Lcom/android/dx/dex/file/ClassDefItem;Lcom/android/dx/dex/file/DexFile;)V+265
+j  com.android.dx.dex.cf.CfTranslator.translate0(Lcom/android/dx/cf/direct/DirectClassFile;[BLcom/android/dx/dex/cf/CfOptions;Lcom/android/dx/dex/DexOptions;Lcom/android/dx/dex/file/DexFile;)Lcom/android/dx/dex/file/ClassDefItem;+120
+j  com.android.dx.dex.cf.CfTranslator.translate(Lcom/android/dx/cf/direct/DirectClassFile;[BLcom/android/dx/dex/cf/CfOptions;Lcom/android/dx/dex/DexOptions;Lcom/android/dx/dex/file/DexFile;)Lcom/android/dx/dex/file/ClassDefItem;+6
+j  com.android.dx.command.dexer.Main.processClass(Ljava/lang/String;[B)Z+251
+j  com.android.dx.command.dexer.Main.processFileBytes(Ljava/lang/String;J[B)Z+188
+j  com.android.dx.command.dexer.Main.access$300(Ljava/lang/String;J[B)Z+3
+j  com.android.dx.command.dexer.Main$1.processFileBytes(Ljava/lang/String;J[B)Z+4
+j  com.android.dx.cf.direct.ClassPathOpener.processOne(Ljava/io/File;Z)Z+82
+j  com.android.dx.cf.direct.ClassPathOpener.processDirectory(Ljava/io/File;Z)Z+64
+j  com.android.dx.cf.direct.ClassPathOpener.processOne(Ljava/io/File;Z)Z+10
+j  com.android.dx.cf.direct.ClassPathOpener.processDirectory(Ljava/io/File;Z)Z+64
+j  com.android.dx.cf.direct.ClassPathOpener.processOne(Ljava/io/File;Z)Z+10
+j  com.android.dx.cf.direct.ClassPathOpener.processDirectory(Ljava/io/File;Z)Z+64
+j  com.android.dx.cf.direct.ClassPathOpener.processOne(Ljava/io/File;Z)Z+10
+j  com.android.dx.cf.direct.ClassPathOpener.processDirectory(Ljava/io/File;Z)Z+64
+j  com.android.dx.cf.direct.ClassPathOpener.processOne(Ljava/io/File;Z)Z+10
+j  com.android.dx.cf.direct.ClassPathOpener.processDirectory(Ljava/io/File;Z)Z+64
+j  com.android.dx.cf.direct.ClassPathOpener.processOne(Ljava/io/File;Z)Z+10
+j  com.android.dx.cf.direct.ClassPathOpener.process()Z+15
+j  com.android.dx.command.dexer.Main.processOne(Ljava/lang/String;Lcom/android/dx/cf/direct/ClassPathOpener$FileNameFilter;)V+58
+j  com.android.dx.command.dexer.Main.processAllFiles()Z+202
+j  com.android.dx.command.dexer.Main.runMonoDex()I+58
+j  com.android.dx.command.dexer.Main.run(Lcom/android/dx/command/dexer/Main$Arguments;)I+76
+j  com.android.dx.command.dexer.Main.main([Ljava/lang/String;)V+14
+j  com.android.dx.command.Main.main([Ljava/lang/String;)V+61
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x0000000016700000 JavaThread "Service Thread" daemon [_thread_blocked, id=7428, stack(0x0000000016b90000,0x0000000016c90000)]
+  0x0000000016690800 JavaThread "C1 CompilerThread2" daemon [_thread_blocked, id=84, stack(0x0000000016a90000,0x0000000016b90000)]
+  0x0000000014f8c000 JavaThread "C2 CompilerThread1" daemon [_thread_blocked, id=4848, stack(0x0000000016590000,0x0000000016690000)]
+  0x0000000014f88800 JavaThread "C2 CompilerThread0" daemon [_thread_blocked, id=948, stack(0x0000000016490000,0x0000000016590000)]
+  0x0000000014f3d800 JavaThread "Attach Listener" daemon [_thread_blocked, id=6132, stack(0x0000000016390000,0x0000000016490000)]
+  0x0000000014f27800 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=8856, stack(0x0000000016290000,0x0000000016390000)]
+  0x0000000002855000 JavaThread "Finalizer" daemon [_thread_blocked, id=9072, stack(0x0000000016190000,0x0000000016290000)]
+  0x000000000284c800 JavaThread "Reference Handler" daemon [_thread_blocked, id=476, stack(0x0000000016090000,0x0000000016190000)]
+=>0x0000000002760800 JavaThread "main" [_thread_in_vm, id=8540, stack(0x0000000002660000,0x0000000002760000)]
+
+Other Threads:
+  0x0000000014ef5800 VMThread [stack: 0x0000000015f90000,0x0000000016090000] [id=5792]
+  0x000000001671c800 WatcherThread [stack: 0x0000000016c90000,0x0000000016d90000] [id=8932]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap:
+ PSYoungGen      total 35840K, used 10125K [0x00000000eab00000, 0x00000000ed300000, 0x0000000100000000)
+  eden space 30720K, 32% used [0x00000000eab00000,0x00000000eb4e3538,0x00000000ec900000)
+  from space 5120K, 0% used [0x00000000ece00000,0x00000000ece00000,0x00000000ed300000)
+  to   space 5120K, 0% used [0x00000000ec900000,0x00000000ec900000,0x00000000ece00000)
+ ParOldGen       total 81920K, used 0K [0x00000000c0000000, 0x00000000c5000000, 0x00000000eab00000)
+  object space 81920K, 0% used [0x00000000c0000000,0x00000000c0000000,0x00000000c5000000)
+ Metaspace       used 5099K, capacity 6448K, committed 6528K, reserved 1056768K
+  class space    used 540K, capacity 616K, committed 640K, reserved 1048576K
+
+Card table byte_map: [0x0000000011c20000,0x0000000011e30000] byte_map_base: 0x0000000011620000
+
+Marking Bits: (ParMarkBitMap*) 0x000000005f0fd4f0
+ Begin Bits: [0x0000000012390000, 0x0000000013390000)
+ End Bits:   [0x0000000013390000, 0x0000000014390000)
+
+Polling page: 0x00000000021e0000
+
+CodeCache: size=245760Kb used=2387Kb max_used=2387Kb free=243372Kb
+ bounds [0x0000000002860000, 0x0000000002ad0000, 0x0000000011860000]
+ total_blobs=815 nmethods=555 adapters=175
+ compilation: enabled
+
+Compilation events (10 events):
+Event: 1.074 Thread 0x0000000016690800 nmethod 552 0x0000000002ab2550 code [0x0000000002ab26e0, 0x0000000002ab2bc8]
+Event: 1.074 Thread 0x0000000016690800  550       3       com.android.dx.rop.code.RegisterSpec::equals (51 bytes)
+Event: 1.075 Thread 0x0000000016690800 nmethod 550 0x0000000002ab2d50 code [0x0000000002ab2f00, 0x0000000002ab34b8]
+Event: 1.075 Thread 0x0000000016690800  548       3       com.android.dx.ssa.NormalSsaInsn::mapSourceRegisters (48 bytes)
+Event: 1.075 Thread 0x0000000016690800 nmethod 548 0x0000000002ab3610 code [0x0000000002ab37a0, 0x0000000002ab3e08]
+Event: 1.075 Thread 0x0000000016690800  551       3       com.android.dx.util.FixedSizeList::equals (41 bytes)
+Event: 1.076 Thread 0x0000000016690800 nmethod 551 0x0000000002ab3fd0 code [0x0000000002ab4160, 0x0000000002ab45e8]
+Event: 1.076 Thread 0x0000000016690800  553       3       com.android.dx.rop.code.RegisterSpec::equals (60 bytes)
+Event: 1.076 Thread 0x0000000016690800 nmethod 553 0x0000000002ab4710 code [0x0000000002ab48c0, 0x0000000002ab4f18]
+Event: 1.076 Thread 0x0000000016690800  554       3       com.android.dx.ssa.SsaMethod::updateOneDefinition (70 bytes)
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (10 events):
+Event: 0.819 Thread 0x0000000002760800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000eb330418) thrown at [C:\workspace\8-2-build-windows-amd64-cygwin\jdk8u31\2394\hotspot\src\share\vm\prims\jvm.cpp, line 1312]
+Event: 0.821 Thread 0x0000000002760800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000eb333e70) thrown at [C:\workspace\8-2-build-windows-amd64-cygwin\jdk8u31\2394\hotspot\src\share\vm\prims\jvm.cpp, line 1312]
+Event: 0.829 Thread 0x0000000002760800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000eb3408c8) thrown at [C:\workspace\8-2-build-windows-amd64-cygwin\jdk8u31\2394\hotspot\src\share\vm\prims\jvm.cpp, line 1312]
+Event: 0.831 Thread 0x0000000002760800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000eb347768) thrown at [C:\workspace\8-2-build-windows-amd64-cygwin\jdk8u31\2394\hotspot\src\share\vm\prims\jvm.cpp, line 1312]
+Event: 0.832 Thread 0x0000000002760800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000eb34c0b8) thrown at [C:\workspace\8-2-build-windows-amd64-cygwin\jdk8u31\2394\hotspot\src\share\vm\prims\jvm.cpp, line 1312]
+Event: 0.834 Thread 0x0000000002760800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000eb351b88) thrown at [C:\workspace\8-2-build-windows-amd64-cygwin\jdk8u31\2394\hotspot\src\share\vm\prims\jvm.cpp, line 1312]
+Event: 0.836 Thread 0x0000000002760800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000eb35a910) thrown at [C:\workspace\8-2-build-windows-amd64-cygwin\jdk8u31\2394\hotspot\src\share\vm\prims\jvm.cpp, line 1312]
+Event: 0.838 Thread 0x0000000002760800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000eb35ff20) thrown at [C:\workspace\8-2-build-windows-amd64-cygwin\jdk8u31\2394\hotspot\src\share\vm\prims\jvm.cpp, line 1312]
+Event: 0.840 Thread 0x0000000002760800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000eb362fc0) thrown at [C:\workspace\8-2-build-windows-amd64-cygwin\jdk8u31\2394\hotspot\src\share\vm\prims\jvm.cpp, line 1312]
+Event: 0.988 Thread 0x0000000002760800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000eb45caa8) thrown at [C:\workspace\8-2-build-windows-amd64-cygwin\jdk8u31\2394\hotspot\src\share\vm\prims\jvm.cpp, line 1312]
+
+Events (10 events):
+Event: 0.836 loading class com/android/dx/dex/file/DebugInfoItem
+Event: 0.836 loading class com/android/dx/dex/file/DebugInfoItem done
+Event: 0.838 loading class com/android/dx/rop/annotation/AnnotationsList
+Event: 0.838 loading class com/android/dx/rop/annotation/AnnotationsList done
+Event: 0.839 loading class com/android/dx/dex/file/MethodIdItem
+Event: 0.839 loading class com/android/dx/dex/file/MethodIdItem done
+Event: 0.869 Thread 0x0000000002760800 DEOPT PACKING pc=0x00000000029f2d95 sp=0x000000000275e4d0
+Event: 0.875 Thread 0x0000000002760800 DEOPT UNPACKING pc=0x00000000028a71bf sp=0x000000000275e1d0 mode 0
+Event: 0.974 loading class com/android/dx/cf/code/BytecodeArray$ConstantParserVisitor
+Event: 0.974 loading class com/android/dx/cf/code/BytecodeArray$ConstantParserVisitor done
+
+
+Dynamic libraries:
+0x00007ff7d05a0000 - 0x00007ff7d05d4000 	D:\DevlopmentInstall\jdk1.8\bin\java.exe
+0x00007ffa4e380000 - 0x00007ffa4e541000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ffa4ba90000 - 0x00007ffa4bb3d000 	C:\WINDOWS\system32\KERNEL32.DLL
+0x00007ffa4b740000 - 0x00007ffa4b91d000 	C:\WINDOWS\system32\KERNELBASE.dll
+0x00007ffa4bea0000 - 0x00007ffa4bf46000 	C:\WINDOWS\system32\ADVAPI32.dll
+0x00007ffa4de50000 - 0x00007ffa4deed000 	C:\WINDOWS\system32\msvcrt.dll
+0x00007ffa4ba30000 - 0x00007ffa4ba8b000 	C:\WINDOWS\system32\sechost.dll
+0x00007ffa4bbd0000 - 0x00007ffa4bcf6000 	C:\WINDOWS\system32\RPCRT4.dll
+0x00007ffa4e180000 - 0x00007ffa4e2ce000 	C:\WINDOWS\system32\USER32.dll
+0x00007ffa4c2a0000 - 0x00007ffa4c426000 	C:\WINDOWS\system32\GDI32.dll
+0x00007ffa3ebd0000 - 0x00007ffa3ee44000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.10240.16384_none_f41f7b285750ef43\COMCTL32.dll
+0x00007ffa4bd10000 - 0x00007ffa4bd46000 	C:\WINDOWS\system32\IMM32.DLL
+0x00007ffa4dc60000 - 0x00007ffa4ddbc000 	C:\WINDOWS\system32\MSCTF.dll
+0x000000005e630000 - 0x000000005e702000 	D:\DevlopmentInstall\jdk1.8\jre\bin\msvcr100.dll
+0x000000005e920000 - 0x000000005f17a000 	D:\DevlopmentInstall\jdk1.8\jre\bin\server\jvm.dll
+0x00007ffa4bf50000 - 0x00007ffa4bf58000 	C:\WINDOWS\system32\PSAPI.DLL
+0x00007ffa41360000 - 0x00007ffa41369000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ffa48fc0000 - 0x00007ffa48fe3000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ffa4ddc0000 - 0x00007ffa4de29000 	C:\WINDOWS\system32\WS2_32.dll
+0x00007ffa4bd00000 - 0x00007ffa4bd08000 	C:\WINDOWS\system32\NSI.dll
+0x00000000021b0000 - 0x00000000021dc000 	C:\WINDOWS\SYSTEM32\WINMMBASE.dll
+0x00007ffa4aef0000 - 0x00007ffa4af34000 	C:\WINDOWS\system32\cfgmgr32.dll
+0x00007ffa49700000 - 0x00007ffa49727000 	C:\WINDOWS\SYSTEM32\DEVOBJ.dll
+0x000000005f9b0000 - 0x000000005f9bf000 	D:\DevlopmentInstall\jdk1.8\jre\bin\verify.dll
+0x000000005f980000 - 0x000000005f9a8000 	D:\DevlopmentInstall\jdk1.8\jre\bin\java.dll
+0x000000005f960000 - 0x000000005f976000 	D:\DevlopmentInstall\jdk1.8\jre\bin\zip.dll
+0x00007ffa4c5e0000 - 0x00007ffa4db02000 	C:\WINDOWS\system32\SHELL32.dll
+0x00007ffa4b110000 - 0x00007ffa4b738000 	C:\WINDOWS\system32\windows.storage.dll
+0x00007ffa4c020000 - 0x00007ffa4c29c000 	C:\WINDOWS\system32\combase.dll
+0x00007ffa4def0000 - 0x00007ffa4df41000 	C:\WINDOWS\system32\shlwapi.dll
+0x00007ffa4ad90000 - 0x00007ffa4ad9f000 	C:\WINDOWS\system32\kernel.appcore.dll
+0x00007ffa4ae30000 - 0x00007ffa4aee3000 	C:\WINDOWS\system32\shcore.dll
+0x00007ffa4adc0000 - 0x00007ffa4ae0a000 	C:\WINDOWS\system32\powrprof.dll
+0x00007ffa4ae10000 - 0x00007ffa4ae23000 	C:\WINDOWS\system32\profapi.dll
+0x00007ffa36890000 - 0x00007ffa36a1a000 	C:\WINDOWS\SYSTEM32\dbghelp.dll
+
+VM Arguments:
+jvm_args: -Xmx1024M -Dfile.encoding=GBK -Duser.country=CN -Duser.language=zh -Duser.variant 
+java_command: com.android.dx.command.Main --dex --output D:\workspace\AndroidStudio\Shudu\somusic\build\intermediates\dex\debug D:\workspace\AndroidStudio\Shudu\somusic\build\intermediates\classes\debug D:\workspace\AndroidStudio\Shudu\somusic\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-0f39ec9336852d2bf1b8628fd491252dc1ab37f0.jar D:\workspace\AndroidStudio\Shudu\somusic\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-d8332ad0da4b8a3d1538c340a6f40f486a391485.jar D:\workspace\AndroidStudio\Shudu\somusic\build\intermediates\pre-dexed\debug\classes-f7d32e7f4e26defd8ea3fd36bc2e9e8cdb8a2248.jar D:\workspace\AndroidStudio\Shudu\somusic\build\intermediates\pre-dexed\debug\classes-49e400e3185bc0ac1520db5c89b1c0c5321e1079.jar
+java_class_path (initial): D:\DevlopmentInstall\AndroidSDK\build-tools\21.1.2\lib\dx.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=D:\DevlopmentInstall\jdk1.8\
+PATH=C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;D:\DevlopmentInstall\mysql5.6\bin;D:\DevlopmentInstall\jdk1.8\bin;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;D:\DevlopmentInstall\AndroidSDK\platform-tools;C:\Program Files (x86)\ATI Technologies\ATI.ACE\Core-Static;D:\masm32\bin
+USERNAME=Administrator
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=AMD64 Family 18 Model 1 Stepping 0, AuthenticAMD
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 8.1 , 64 bit Build 9600 
+
+CPU:total 4 (4 cores per cpu, 1 threads per core) family 18 model 1 stepping 0, cmov, cx8, fxsr, mmx, sse, sse2, sse3, popcnt, mmxext, 3dnowpref, lzcnt, sse4a, tsc, tscinvbit, tscinv
+
+Memory: 4k page, physical 7840348k(2923772k free), swap 8364636k(1892380k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (25.31-b07) for windows-amd64 JRE (1.8.0_31-b13), built on Dec 17 2014 21:00:28 by "java_re" with MS VC++ 10.0 (VS2010)
+
+time: Thu Oct 08 14:55:39 2015
+elapsed time: 1 seconds (0d 0h 0m 1s)
+
