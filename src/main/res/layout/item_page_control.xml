@@ -15,9 +15,8 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:roundColor="#FFFFFF"
-            app:textIsDisplay="true"
+            app:textIsDisplay="false"
             app:roundProgressColor="#0000FF"
-            app:textColor="#00FF00"
 
             />
         <LinearLayout android:paddingLeft="15dp"

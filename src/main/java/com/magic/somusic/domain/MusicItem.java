@@ -11,6 +11,24 @@ public class MusicItem {
     private String artist;
     private String album;
     private int collect;
+    private String lrcpath;
+    private String imagepath;
+
+    public String getLrcpath() {
+        return lrcpath;
+    }
+
+    public void setLrcpath(String lrcpath) {
+        this.lrcpath = lrcpath;
+    }
+
+    public String getImagepath() {
+        return imagepath;
+    }
+
+    public void setImagepath(String imagepath) {
+        this.imagepath = imagepath;
+    }
 
     public int get_id() {
         return _id;

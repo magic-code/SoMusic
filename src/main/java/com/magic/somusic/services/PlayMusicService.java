@@ -34,6 +34,9 @@ public class PlayMusicService extends Service {
     private StateReciver stateReciver;
     private LocalService localService = new LocalService();
     private MusicControlReciver musicControlReciver;
+
+
+
     public class LocalService extends Binder{
         public PlayMusicService getService(){
             return PlayMusicService.this;
@@ -56,13 +59,15 @@ public class PlayMusicService extends Service {
         registerReceiver(stateReciver,intentFilter);
         musicControlReciver = new MusicControlReciver();
         IntentFilter controlFilter = new IntentFilter();
+        controlFilter.addAction(Config.Broadcast.APP_EXIT);
         controlFilter.addAction(Config.Broadcast.MUSIC_CHANGE);
         controlFilter.addAction(Config.Broadcast.MUSIC_NEXT);
         controlFilter.addAction(Config.Broadcast.MUSIC_PLAY);
         controlFilter.addAction(Config.Broadcast.MUSIC_PAUSE);
         controlFilter.addAction(Config.Broadcast.MUSIC_PREVIOUS);
         registerReceiver(musicControlReciver, controlFilter);
-        showNotification(null,-1);
+        //showNotification(null,-1);
+        startForeground(1,getNotification(this,null,Config.PlayState.STATE_STOP));
         return localService;
     }
     public void initServ(){
@@ -135,12 +140,19 @@ public class PlayMusicService extends Service {
         //stopForeground(true);
         unregisterReceiver(stateReciver);
         unregisterReceiver(musicControlReciver);
+        NotificationManager manager = (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
+        manager.cancel(1);
+        stopForeground(true);
     }
 
     RemoteViews remoteViews;
-    public void showNotification(MusicItem item,int playing){
+    public void showNotification(Context context,MusicItem item,int playing){
         NotificationManager manager = (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+
+        manager.notify(1,getNotification(context,item,playing));
+    }
+    private Notification getNotification(Context context,MusicItem item,int playing){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         remoteViews = new RemoteViews(getPackageName(), R.layout.notification_custom);
         if (item!=null) {
             if (playing == Config.PlayState.STATE_PLAYING) {
@@ -153,13 +165,13 @@ public class PlayMusicService extends Service {
         }
         Intent nextintent = new Intent();
         nextintent.setAction(Config.Broadcast.MUSIC_NEXT);
-        PendingIntent nextPIntent = PendingIntent.getBroadcast(this,Config.Code.REQ_MUSIC_NEXT,nextintent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent nextPIntent = PendingIntent.getBroadcast(context,Config.Code.REQ_MUSIC_NEXT,nextintent,PendingIntent.FLAG_UPDATE_CURRENT);
         Intent playintent = new Intent();
         playintent.setAction(Config.Broadcast.MUSIC_PLAY);
-        PendingIntent playPIntent = PendingIntent.getBroadcast(this,Config.Code.REQ_MUSIC_PLAY,playintent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent playPIntent = PendingIntent.getBroadcast(context,Config.Code.REQ_MUSIC_PLAY,playintent,PendingIntent.FLAG_UPDATE_CURRENT);
         Intent pauseintent = new Intent();
         pauseintent.setAction(Config.Broadcast.MUSIC_PAUSE);
-        PendingIntent pausePIntent = PendingIntent.getBroadcast(this,Config.Code.REQ_MUSIC_PAUSE,pauseintent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pausePIntent = PendingIntent.getBroadcast(context,Config.Code.REQ_MUSIC_PAUSE,pauseintent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent exitintent = new Intent();
         exitintent.setAction(Config.Broadcast.APP_EXIT);
@@ -171,14 +183,13 @@ public class PlayMusicService extends Service {
 
         builder.setSmallIcon(R.mipmap.img_notification_logo);
         builder.setContent(remoteViews);
-        Intent aintent = new Intent(this,MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this,Config.Code.REQ_TO_ACTIVITY,aintent,PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent aintent = new Intent(context,MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(context,Config.Code.REQ_TO_ACTIVITY,aintent,PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
         Notification notification = builder.build();
         notification.flags = Notification.FLAG_NO_CLEAR;
-        manager.notify(1,notification);
+        return notification;
     }
-
     class StateReciver extends BroadcastReceiver{
 
         @Override
@@ -222,8 +233,11 @@ public class PlayMusicService extends Service {
                 PlayMusicService.this.pause();
             }else if (action.equals(Config.Broadcast.MUSIC_PREVIOUS)){
                 PlayMusicService.this.previous();
+            }else if(action.equals(Config.Broadcast.APP_EXIT)){
+                PlayMusicService.this.onDestroy();
+                return;
             }
-            showNotification(PlayMusicService.this.getMusic(getCurrentPos()), PlayMusicService.this.getPlaying());
+            showNotification(PlayMusicService.this,PlayMusicService.this.getMusic(getCurrentPos()), PlayMusicService.this.getPlaying());
         }
     }
 }

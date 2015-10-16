@@ -3,7 +3,7 @@
     package="com.magic.somusic" >
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <application
         android:allowBackup="true"
         android:icon="@drawable/img_ttpod"
@@ -19,15 +19,16 @@
         <service android:name=".services.ScanMusicService" />
         <service
             android:name=".services.PlayMusicService"
-            android:singleUser="true" />
+            android:singleUser="true" >
+         </service>
 
         <activity
             android:name=".SplashActivity"
-            android:label="@string/title_activity_splash" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".FirstInstallActivity"
-            android:label="@string/title_activity_first_install" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@mipmap/lrc_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:fitsSystemWindows="true"
+        android:clipToPadding="true"
+        android:paddingTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView android:id="@+id/lrc_action_back"
+            android:paddingLeft="10dp"
+            android:src="@drawable/back_button_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_toRightOf="@+id/lrc_action_back"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <TextView android:singleLine="true"
+                android:id="@+id/lrc_action_title"
+                style="@style/large_font_white"
+                tools:text="Sparks Fly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:id="@+id/lrc_action_artist"
+                android:singleLine="true"
+                style="@style/mid_font_white"
+                tools:text="Taylor Swift"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <ImageView android:id="@+id/lrc_action_collection"
+            android:paddingLeft="15dp"
+            android:layout_gravity="right|center_vertical"
+            android:src="@mipmap/collection_false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView android:id="@+id/lrc_action_changeskin"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_gravity="right|center_vertical"
+            android:src="@mipmap/change_skin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_lrc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v4.view.ViewPager>
+    <!--<com.magic.somusic.ui.LrcMulityLineView-->
+        <!--android:id="@+id/mulline_lrcview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
+</LinearLayout>

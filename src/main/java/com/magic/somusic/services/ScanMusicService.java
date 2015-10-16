@@ -53,6 +53,8 @@ public class ScanMusicService extends IntentService {
                     music.setArtist(artist);
                     music.setDuration(duration);
                     music.setCollect(Config.CollecteState.STATE_NOT_COLLECTED);//初始化为 未收藏
+                    music.setLrcpath("");
+                    music.setImagepath("");
                     MusicDBHelper.getInstance(this).save(music);
                     count++;
                 }

@@ -5,6 +5,9 @@ package com.magic.somusic;
  */
 public class Config {
 
+    public static final int DOWNLOAD_LRC_SUC =0x11 ;
+    public static final int DOWNLOAD_LRC_ERR =0x12 ;
+
     /**播放状态*/
     //public  int PLAY_STATE;
     public class PlayState{
@@ -79,6 +82,9 @@ public class Config {
         public static final int REQ_MUSIC_EXIT = 0;
         public static final int REQ_TO_ACTIVITY = 5;
     }
+    public static final int DOWNLOAD_INFO_SUS = 0x001;
+    public static final int DOWNLOAD_INFO_ERR = 0x002;
+
 //    public class Setting{
 //        public static final String SHAREPREFENS = "somusic";
 //        public static final String LAST_LIST = "lastlist";

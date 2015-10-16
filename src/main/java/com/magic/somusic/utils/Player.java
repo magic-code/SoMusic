@@ -116,7 +116,8 @@ public class Player {
         }else{
             position = (position+list.size()-1)%list.size();
             musicItem = list.get(position);
-            mediaPlayer.reset();    //先停止上一首
+            if (mediaPlayer!=null)
+                mediaPlayer.reset();    //先停止上一首
             play(context,list,position);
         }
         return musicItem;

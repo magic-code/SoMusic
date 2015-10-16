@@ -24,9 +24,14 @@
     <string name="nummusic">首音乐</string>
     <string name="scanerror">扫描音乐出错，请确定存储卡已经插好</string>
     <string name="enterApp">进入SO音乐</string>
+    <string name="scaning_wait">正在扫描中，请稍候</string>
+    <string name="no_lrc_download">没有歌词是否要下载</string>
+    <string name="yes">确定</string>
+    <string name="cancle">取消</string>
+    <string name="down_lrc_suc">歌词下载成功</string>
+    <string name="down_lrc_err">歌词下载失败</string>
+    <string name="lrc_tip">没有歌词或歌词错误</string>
 
 <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_splash">SplashActivity</string>
-    <string name="title_activity_first_install">FirstInstallActivity</string>
+
 </resources>

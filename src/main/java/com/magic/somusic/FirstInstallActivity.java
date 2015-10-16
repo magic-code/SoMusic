@@ -43,6 +43,7 @@ public class FirstInstallActivity extends Activity {
                     if (!flag) {
                         Intent intent = new Intent(FirstInstallActivity.this, ScanMusicService.class);
                         startService(intent);
+                        txTip.setText(R.string.scaning_wait);
 
                     }else{
                         Intent intent = new Intent(FirstInstallActivity.this,SplashActivity.class);

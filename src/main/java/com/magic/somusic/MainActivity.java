@@ -1,9 +1,5 @@
 package com.magic.somusic;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -19,26 +15,24 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RemoteViews;
 import android.widget.TextView;
 
 import com.magic.somusic.adapter.SlideControlAdapter;
-import com.magic.somusic.db.MusicDBHelper;
 import com.magic.somusic.domain.MusicItem;
 import com.magic.somusic.fragment.LocalMusicFragment;
+import com.magic.somusic.fragment.LrcViewFragment;
 import com.magic.somusic.fragment.MainFragment;
 import com.magic.somusic.services.PlayMusicService;
 import com.magic.somusic.services.ScanMusicService;
 import com.magic.somusic.ui.MyViewPager;
 import com.magic.somusic.ui.RoundProgressBar;
+import com.magic.somusic.ui.SlidingFrameLayout;
 
 import java.util.ArrayList;
 
@@ -50,9 +44,14 @@ public class MainActivity extends FragmentActivity {
     private TextView txArtist;
     private ImageView mPlayPause;
     private RoundProgressBar roundProgressBar;
-    private MusicChangeReciver musicChangeReciver;
+    private MusicChangeReciver musicChangeReciver = new MusicChangeReciver();
     private MyViewPager vp_control;
     private SlideControlAdapter adapter;
+    private AppExitReciver appExitReciver = new AppExitReciver();
+
+    private LinearLayout main_control_panel;
+    private SlidingFrameLayout slidingFrameLayout;
+    private LrcViewFragment slidingfragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +76,9 @@ public class MainActivity extends FragmentActivity {
         //roundProgressBar.setProgress(50);
         //initRoundProgress();
         IntentFilter filter = new IntentFilter(Config.Broadcast.MUSIC_CHANGE);
-        registerReceiver(new MusicChangeReciver(),filter);
+        registerReceiver(musicChangeReciver,filter);
+        IntentFilter exitfilter = new IntentFilter(Config.Broadcast.APP_EXIT);
+        registerReceiver(appExitReciver,exitfilter);
         mPlayPause = (ImageView) findViewById(R.id.iv_main_play);
         mPlayPause.setOnClickListener(new PlayAndPauseClickListener());
         vp_control = (MyViewPager) findViewById(R.id.vp_main_control);
@@ -113,6 +114,48 @@ public class MainActivity extends FragmentActivity {
         txArtist = (TextView) adapter.getView(1).findViewById(R.id.tx_main_artist);
 
         initRoundProgress();
+        main_control_panel = (LinearLayout) findViewById(R.id.ll_control_panel);
+        slidingFrameLayout = (SlidingFrameLayout) findViewById(R.id.main_slidinglayout);
+        slidingFrameLayout.setStateChangeListener(new SlidingFrameLayout.StateChangeListener() {
+            @Override
+            public void visbilityChange(boolean visbility) {
+                if (visbility) {
+                    Log.e("--main", "----slidingmenu--open");
+
+                     slidingfragment = new LrcViewFragment();
+                     FragmentManager fm = getSupportFragmentManager();
+                     FragmentTransaction ft = fm.beginTransaction();
+                     if (!slidingfragment.isAdded()) {
+                          ft.add(slidingfragment, "lrc");
+                          ft.replace(R.id.slidingmenu_frame, slidingfragment);
+                          ft.addToBackStack(null);
+                          ft.commit();
+                     }
+
+                }else{
+                    if (slidingfragment.isAdded()) {
+                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        ft.remove(slidingfragment);
+                        ft.commit();
+                    }
+                }
+            }
+
+            @Override
+            public void openstateChange(boolean open) {
+//                if (!open){
+//                    if (slidingfragment!=null){
+//                        if(slidingfragment.isAdded()){
+//                            FragmentManager fm = getSupportFragmentManager();
+//                            FragmentTransaction ft = fm.beginTransaction();
+//                            ft.remove(slidingfragment);
+//                            ft.commit();
+//                        }
+//                    }
+//                }
+            }
+        });
     }
 
     class PlayAndPauseClickListener implements View.OnClickListener {
@@ -135,6 +178,17 @@ public class MainActivity extends FragmentActivity {
 
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(musicChangeReciver);
+        unregisterReceiver(appExitReciver);
+        unbindService(conn);
+        //Intent intentService = new Intent(this,PlayMusicService.class);
+        //stopService(intentService);
+    }
+
     public void initRoundProgress(){
         roundProgressBar.post(mProgressThread);
     }
@@ -256,5 +310,13 @@ public class MainActivity extends FragmentActivity {
             //showNotification(item,musicService.getPlaying());
         }
     }
+    class AppExitReciver extends BroadcastReceiver{
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Intent intentService = new Intent(MainActivity.this,PlayMusicService.class);
+            stopService(intentService);
+            MainActivity.this.finish();
+        }
+    }
 }
