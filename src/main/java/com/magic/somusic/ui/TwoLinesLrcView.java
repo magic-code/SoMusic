@@ -4,9 +4,13 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ComposeShader;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -42,7 +46,7 @@ public class TwoLinesLrcView extends View {
     /**当前要渲染的字符在 当前行内容中的位置*/
     private int mRenderCharPos = 0;
     /**当前渲染字符的 渐变百分比*/
-    private float mRenderGradientPercent = 0;
+    private float mRenderGradientPercent = 0.001f;
     /**已经渲染过的字符的 颜色*/
     private final int hasRenderFontColor = Color.BLUE;
     /**还未渲染过的字符的 颜色*/
@@ -62,7 +66,7 @@ public class TwoLinesLrcView extends View {
     /**正在渲染的字符的 渐变sharder*/
     private LinearGradient curRenderCharSharder;
     /**正在渲染字符的 渐变颜色数组*/
-    private int[] mCurRenderCharColors = new int[]{hasRenderFontColor,notRenderFontColor,notRenderFontColor};
+    private int[] mCurRenderCharColors = new int[]{hasRenderFontColor,notRenderFontColor};
 
     public void setmLrcRows(ArrayList<LrcRow> list){
         this.listRows = list;
@@ -97,10 +101,11 @@ public class TwoLinesLrcView extends View {
         leftRenderPaint.setAntiAlias(true);
         leftRenderPaint.setTextSize(lrcFontSize);
         leftRenderPaint.setColor(hasRenderFontColor);
-
+        leftRenderPaint.setTypeface(Typeface.DEFAULT_BOLD);
         rightRenderPaint.setTextAlign(Paint.Align.RIGHT);
         rightRenderPaint.setAntiAlias(true);
         rightRenderPaint.setTextSize(lrcFontSize);
+        rightRenderPaint.setTypeface(Typeface.DEFAULT_BOLD);
         //rightRenderPaint.setColor(notRenderFontColor);
 
         //curRenderCharPaint.setTextSize(lrcFontSize);
@@ -112,39 +117,64 @@ public class TwoLinesLrcView extends View {
         }
         String text = listRows.get(mLrcRow).content;
         float plen = leftRenderPaint.measureText("测",0,1);
-        mRenderCharPos = mRenderCharPos>text.length() ? text.length():mRenderCharPos;
+        mRenderCharPos = mRenderCharPos>text.length() | mRenderCharPos<0 ? text.length():mRenderCharPos;
         float xlen = leftRenderPaint.measureText(text,xoffset,mRenderCharPos);
-        if (xlen>getWidth()){
-            xoffset+=2;
+        if (xlen>getWidth()-lrcFontSize*2){
+            xoffset+=1;
         }
-        Log.e("----",getWidth()+"-----"+plen);
-        int perLineCharNum = 2*(int)(getWidth()/plen);  //一行中最多能显示的字符
-        perLineCharNum = perLineCharNum>text.length() ? text.length():perLineCharNum;
-        curRenderCharSharder = new LinearGradient(0,0,getWidth(),0,mCurRenderCharColors,new float[]{0,mRenderGradientPercent,1}, Shader.TileMode.CLAMP);//设置渐变
+        //Log.e("----",getWidth()+"-----"+plen);
+        //int perLineCharNum = 2*(int)(getWidth()/plen);  //一行中最多能显示的字符
+        //perLineCharNum = perLineCharNum>text.length() ? text.length():perLineCharNum;
+        curRenderCharSharder = new LinearGradient(0,0,getWidth(),0,mCurRenderCharColors,new float[]{mRenderGradientPercent-0.001f,mRenderGradientPercent}, Shader.TileMode.CLAMP);//设置渐变
         leftRenderPaint.setShader(null);
         rightRenderPaint.setShader(null);
         if (mCurrentRenderLine==RenderLine.FIRST_LINE){ //如果当前渲染行为第一行
             //画第一行渲染的字符
              leftRenderPaint.setShader(curRenderCharSharder);
-             canvas.drawText(text,xoffset,xoffset+perLineCharNum,0,lrcFontSize,leftRenderPaint);
+             canvas.drawText(text,xoffset,text.length(),0,lrcFontSize,leftRenderPaint);
 
             //画第二行的字符，（如果第一行是list中的最后一行，第二行显示为已经渲染，否则渲染为 还未渲染状态）
 
             if (mLrcRow==listRows.size()-1) {
-                rightRenderPaint.setColor(hasRenderFontColor);
                 String tt = listRows.get(mLrcRow-1).content;
-                perLineCharNum = perLineCharNum>tt.length() ? tt.length():perLineCharNum;
-                canvas.drawText(tt,0,perLineCharNum,getWidth(),2*lrcFontSize+mRowPadding,rightRenderPaint);
+                //perLineCharNum = perLineCharNum>tt.length() ? tt.length():perLineCharNum;
+                int len=tt.length();
+                for(int i=1;i<tt.length();i++){
+                    float wd = rightRenderPaint.measureText(tt,0,i);
+                    if (wd>=getWidth()-lrcFontSize*2){
+                        len=i-1;
+                        break;
+                    }
+                }
+                rightRenderPaint.setColor(hasRenderFontColor);
+                //第一行已经是 最后一行，此行保持之前的状态（----此处，还未修正---）
+                canvas.drawText(tt,0,len,getWidth(),2*lrcFontSize+mRowPadding,rightRenderPaint);
             }else{
                 rightRenderPaint.setColor(notRenderFontColor);
                 String tt = listRows.get(mLrcRow+1).content;
-                perLineCharNum = perLineCharNum>tt.length() ? tt.length():perLineCharNum;
-                canvas.drawText(tt,0,perLineCharNum,getWidth(),2*lrcFontSize+mRowPadding,rightRenderPaint);
+                int len=tt.length();
+                for(int i=1;i<tt.length();i++){
+                    float wd = rightRenderPaint.measureText(tt,0,i);
+                    if (wd>=getWidth()-lrcFontSize*2){
+                        len=i-1;
+                        break;
+                    }
+                }
+                //perLineCharNum = perLineCharNum>tt.length() ? tt.length():perLineCharNum;
+                canvas.drawText(tt,0,len,getWidth(),2*lrcFontSize+mRowPadding,rightRenderPaint);
             }
         }else if (mCurrentRenderLine==RenderLine.SECOND_LINE){  //如果当前渲染行为第二行
             //画第二行渲染的字符
+            int len=text.length();
+            for(int i=xoffset;i<text.length();i++){
+                float wd = rightRenderPaint.measureText(text,xoffset,i);
+                if (wd>getWidth()-lrcFontSize*2){
+                    len=i-1;
+                    break;
+                }
+            }
             rightRenderPaint.setShader(curRenderCharSharder);
-            canvas.drawText(text,xoffset,xoffset+perLineCharNum,getWidth(),2*lrcFontSize+mRowPadding,rightRenderPaint);
+            canvas.drawText(text,xoffset,len,getWidth(),2*lrcFontSize+mRowPadding,rightRenderPaint);
 
             //画第一行的字符（如果第二行是list中最后一行，则第一行渲染为 已经渲染状态，否则渲染为 还未渲染状态）
             if (mLrcRow==listRows.size()-1) {
@@ -163,9 +193,14 @@ public class TwoLinesLrcView extends View {
                     int time = listRows.get(i+1).time;
                     LrcRow curRow = listRows.get(i);
                     if (time>pos) {
+                        if(curRow.content.trim().equals(""))
+                            return;
                         if(mLrcRow!=i){
                             xoffset=0;
-                            mCurrentRenderLine = i%2==0 ? RenderLine.FIRST_LINE:RenderLine.SECOND_LINE;
+                            if (mCurrentRenderLine==RenderLine.FIRST_LINE)
+                                mCurrentRenderLine=RenderLine.SECOND_LINE;
+                            else
+                                mCurrentRenderLine=RenderLine.FIRST_LINE;
                         }
                         mLrcRow= i;
                         float temp = (float)(pos-curRow.time)*(float)curRow.content.length()/(float)(time-curRow.time);
@@ -175,9 +210,14 @@ public class TwoLinesLrcView extends View {
                         return;
                     }
                 }else if (i==listRows.size()-1){
+                    if (listRows.get(listRows.size()-1).content.equals(""))
+                        return;
                     if(mLrcRow!=i){
                         xoffset=0;
-                        mCurrentRenderLine = i%2==0 ? RenderLine.FIRST_LINE:RenderLine.SECOND_LINE;
+                        if (mCurrentRenderLine==RenderLine.FIRST_LINE)
+                            mCurrentRenderLine=RenderLine.SECOND_LINE;
+                        else
+                            mCurrentRenderLine=RenderLine.FIRST_LINE;
                     }
                     mLrcRow = listRows.size()-1;
                     postInvalidate();

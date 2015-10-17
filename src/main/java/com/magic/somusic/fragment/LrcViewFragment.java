@@ -1,5 +1,6 @@
 package com.magic.somusic.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.ServiceConnection;
@@ -83,6 +84,13 @@ public class LrcViewFragment extends Fragment {
             lrcPosHandler.post(lrcPosThread);
         }
     };
+    private MusicItem musicItem;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initComponent(getView());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -94,7 +102,7 @@ public class LrcViewFragment extends Fragment {
         twoLrcView = (TwoLinesLrcView)twoLrcLayout.findViewById(R.id.lrc_fragment_two_line);
         lrcViews.add(twoLrcLayout);
         lrcViews.add(mulLrcLayout);
-        initComponent(view);
+        //initComponent(view);
         return view;
     }
     private void initComponent(View view){
@@ -106,7 +114,7 @@ public class LrcViewFragment extends Fragment {
         //mulLrcView = (LrcMulityLineView) view.findViewById(R.id.mulline_lrcview);
         vpLrc = (ViewPager) view.findViewById(R.id.vp_lrc);
         musicservice = ((MainActivity)getActivity()).musicService;
-        MusicItem musicItem = musicservice.getMusic(musicservice.getCurrentPos());
+        musicItem = musicservice.getMusic(musicservice.getCurrentPos());
         tx_title.setText(musicItem.getTitle());
         tx_artist.setText(musicItem.getArtist());
         if (musicItem.getCollect()== Config.CollecteState.STATE_COLLECTED){
@@ -143,7 +151,7 @@ public class LrcViewFragment extends Fragment {
             Message mes =  lrcPosHandler.obtainMessage(0,musicservice.getCurrentDuration(),0);
             lrcPosHandler.sendMessage(mes);
             try {
-                Thread.sleep(50);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -138,6 +138,7 @@ public class MainActivity extends FragmentActivity {
                         FragmentTransaction ft = fm.beginTransaction();
                         ft.remove(slidingfragment);
                         ft.commit();
+                        slidingfragment.onDestroyView();
                     }
                 }
             }

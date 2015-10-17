@@ -38,11 +38,20 @@ public class LrcLoader {
         }
     }
 
-    public ArrayList<LrcRow> updateContent(ArrayList<LrcRow> olist){
+    public ArrayList<LrcRow> updateContent(ArrayList<LrcRow> olist){    /*从后向前遍历*/
         if (olist.size()<=0)
             return null;
         ArrayList<LrcRow> nlist = new ArrayList<LrcRow>();
-        for (int i=1;i<olist.size();i++){
+//        for (int i=1;i<olist.size();i++){
+//            LrcRow crow = olist.get(i);
+//            LrcRow prow = olist.get(i-1);
+//            if (crow.time<prow.time){
+//                prow.content = crow.content;
+//            }
+//            nlist.add(prow);
+//        }
+        nlist.add(olist.get(olist.size()-1));
+        for (int i=olist.size()-1;i>0;i--){
             LrcRow crow = olist.get(i);
             LrcRow prow = olist.get(i-1);
             if (crow.time<prow.time){
@@ -50,7 +59,7 @@ public class LrcLoader {
             }
             nlist.add(prow);
         }
-        nlist.add(olist.get(olist.size()-1));
+        Collections.reverse(nlist);
         return nlist;
     }
 
@@ -77,13 +86,13 @@ public class LrcLoader {
 //                    }
 //                    tempsb.append(txt.substring(line*togle,txt.length()));
 //                    row.content = tempsb.toString();
-                    if (!txt.trim().equals("")) {
+                    //if (!txt.trim().equals("")) {
                         row.content = txt;
                         String stime = formatTime(tmp.substring(1, 9));
                         row.stime = stime;
                         row.time = convertTime(stime);
                         list.add(row);
-                    }
+                    //}
                 }
             }
             br.close();
