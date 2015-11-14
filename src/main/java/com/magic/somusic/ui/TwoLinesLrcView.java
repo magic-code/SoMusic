@@ -97,26 +97,20 @@ public class TwoLinesLrcView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if (listRows==null || listRows.size()==0){
+            return;
+        }
         leftRenderPaint.setTextAlign(Paint.Align.LEFT);
         leftRenderPaint.setAntiAlias(true);
         leftRenderPaint.setTextSize(lrcFontSize);
-        leftRenderPaint.setColor(hasRenderFontColor);
         leftRenderPaint.setTypeface(Typeface.DEFAULT_BOLD);
         rightRenderPaint.setTextAlign(Paint.Align.RIGHT);
         rightRenderPaint.setAntiAlias(true);
         rightRenderPaint.setTextSize(lrcFontSize);
         rightRenderPaint.setTypeface(Typeface.DEFAULT_BOLD);
-        //rightRenderPaint.setColor(notRenderFontColor);
 
-        //curRenderCharPaint.setTextSize(lrcFontSize);
-        //curRenderCharPaint.setAntiAlias(true);
-        //curRenderCharPaint.setShader(curRenderCharSharder);
-
-        if (listRows==null || listRows.size()==0){
-            return;
-        }
         String text = listRows.get(mLrcRow).content;
-        float plen = leftRenderPaint.measureText("测",0,1);
+//        float plen = leftRenderPaint.measureText("测",0,1);
         mRenderCharPos = mRenderCharPos>text.length() | mRenderCharPos<0 ? text.length():mRenderCharPos;
         float xlen = leftRenderPaint.measureText(text,xoffset,mRenderCharPos);
         if (xlen>getWidth()-lrcFontSize*2){
@@ -137,6 +131,11 @@ public class TwoLinesLrcView extends View {
 
             if (mLrcRow==listRows.size()-1) {
                 String tt = listRows.get(mLrcRow-1).content;
+                int k=2;
+                while(tt.trim().equals("") && (mLrcRow-k)>0){
+                    tt = listRows.get(mLrcRow-k).content;
+                    k++;
+                }
                 //perLineCharNum = perLineCharNum>tt.length() ? tt.length():perLineCharNum;
                 int len=tt.length();
                 for(int i=1;i<tt.length();i++){
@@ -152,6 +151,11 @@ public class TwoLinesLrcView extends View {
             }else{
                 rightRenderPaint.setColor(notRenderFontColor);
                 String tt = listRows.get(mLrcRow+1).content;
+                int k=2;
+                while(tt.trim().equals("") && (mLrcRow+k)<listRows.size()){
+                    tt = listRows.get(mLrcRow+k).content;
+                    k++;
+                }
                 int len=tt.length();
                 for(int i=1;i<tt.length();i++){
                     float wd = rightRenderPaint.measureText(tt,0,i);
@@ -179,17 +183,29 @@ public class TwoLinesLrcView extends View {
             //画第一行的字符（如果第二行是list中最后一行，则第一行渲染为 已经渲染状态，否则渲染为 还未渲染状态）
             if (mLrcRow==listRows.size()-1) {
                 leftRenderPaint.setColor(hasRenderFontColor);
-                canvas.drawText(listRows.get(mLrcRow-1).content,0,lrcFontSize,leftRenderPaint);
+                String tt = listRows.get(mLrcRow-1).content;
+                int k=2;
+                while(tt.trim().equals("") && (mLrcRow-k)>=0){
+                    tt = listRows.get(mLrcRow-k).content;
+                    k++;
+                }
+                canvas.drawText(tt,0,lrcFontSize,leftRenderPaint);
             }else{
                 leftRenderPaint.setColor(notRenderFontColor);
-                canvas.drawText(listRows.get(mLrcRow+1).content,0,lrcFontSize,leftRenderPaint);
+                String tt = listRows.get(mLrcRow+1).content;
+                int k=2;
+                while(tt.trim().equals("") && (mLrcRow+k)<listRows.size()){
+                    tt = listRows.get(mLrcRow+k).content;
+                    k++;
+                }
+                canvas.drawText(tt,0,lrcFontSize,leftRenderPaint);
             }
         }
     }
     public void setPos(int pos){
         if (listRows!=null && listRows.size()>0){
             for (int i=0;i<listRows.size();i++){
-                if (i!=listRows.size()-1) {
+                if (i<listRows.size()-1) {
                     int time = listRows.get(i+1).time;
                     LrcRow curRow = listRows.get(i);
                     if (time>pos) {
@@ -209,7 +225,7 @@ public class TwoLinesLrcView extends View {
                         postInvalidate();
                         return;
                     }
-                }else if (i==listRows.size()-1){
+                }else{
                     if (listRows.get(listRows.size()-1).content.equals(""))
                         return;
                     if(mLrcRow!=i){

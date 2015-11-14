@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_gravity="center_vertical"
     android:layout_width="match_parent" android:layout_height="match_parent">
     <com.magic.somusic.ui.TwoLinesLrcView android:layout_width="match_parent"
+        android:layout_gravity="center_vertical"
         android:padding="50dp"
-        android:layout_height="match_parent"
+        android:layout_height="300dp"
         android:id="@+id/lrc_fragment_two_line">
-
     </com.magic.somusic.ui.TwoLinesLrcView>
-</LinearLayout>
+    <LinearLayout android:paddingTop="20dp"
+        android:layout_below="@id/lrc_fragment_two_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView android:id="@+id/two_lrc_prev"
+            android:src="@mipmap/img_appwidget_play_prev"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <ImageView android:id="@+id/two_lrc_play"
+            android:src="@mipmap/img_appwidget_play"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <ImageView android:id="@+id/two_lrc_next"
+            android:src="@mipmap/img_appwidget_play_next"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+     </LinearLayout>
+</RelativeLayout>

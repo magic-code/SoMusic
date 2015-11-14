@@ -9,10 +9,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.PixelFormat;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.RemoteViews;
 
 import com.magic.somusic.Config;
@@ -21,9 +26,13 @@ import com.magic.somusic.R;
 import com.magic.somusic.db.MusicDBHelper;
 import com.magic.somusic.domain.AppSetting;
 import com.magic.somusic.domain.MusicItem;
+import com.magic.somusic.ui.TwoLinesLrcView;
+import com.magic.somusic.utils.LrcDialogUtil;
+import com.magic.somusic.utils.LrcLoader;
 import com.magic.somusic.utils.Player;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 /**
  * Created by Administrator on 2015/10/5.
@@ -31,11 +40,21 @@ import java.util.ArrayList;
 public class PlayMusicService extends Service {
 
     private Player mPlayer = Player.getPlayer(this);
-    private StateReciver stateReciver;
+    private StateReciver stateReciver=null;
     private LocalService localService = new LocalService();
-    private MusicControlReciver musicControlReciver;
+    private MusicControlReciver musicControlReciver=null;
 
+    public boolean isShowAlertLrc = false;
+    public LrcDialogUtil lrcDialogUtil = new LrcDialogUtil();
+    private int listName=Config.PlayList.LIST_LOCAL;
 
+    public ArrayList<MusicItem> getList(){
+        return mPlayer.getList();
+    }
+
+    public void updateLrc(int musicId, String lrcPath) {
+        mPlayer.updateLrc(musicId,lrcPath);
+    }
 
     public class LocalService extends Binder{
         public PlayMusicService getService(){
@@ -48,6 +67,12 @@ public class PlayMusicService extends Service {
 
         super.onCreate();
         //startForeground(1,new Notification());
+        lrcDialogUtil.setOnPostionListener(new LrcDialogUtil.OnPostionUpdate() {
+            @Override
+            public int onPostionUpdate() {
+                return getCurrentDuration();
+            }
+        });
     }
 
     @Override
@@ -65,16 +90,18 @@ public class PlayMusicService extends Service {
         controlFilter.addAction(Config.Broadcast.MUSIC_PLAY);
         controlFilter.addAction(Config.Broadcast.MUSIC_PAUSE);
         controlFilter.addAction(Config.Broadcast.MUSIC_PREVIOUS);
+        controlFilter.addAction(Config.Broadcast.LRC_ALERT_TOGGLE);
         registerReceiver(musicControlReciver, controlFilter);
         //showNotification(null,-1);
-        startForeground(1,getNotification(this,null,Config.PlayState.STATE_STOP));
+        startForeground(1,getNotification(this,null,Config.PlayState.STATE_STOP,isShowAlertLrc));
         return localService;
     }
     public void initServ(){
         if (!mPlayer.isFlag()) {
             AppSetting setting = MusicDBHelper.getInstance(this).getSetting();
             ArrayList<MusicItem> list = null;
-            switch (setting.getLast_list()) {
+            listName = setting.getLast_list();
+            switch (listName) {
                 case Config.PlayList.LIST_LOCAL:
                     list = MusicDBHelper.getInstance(this).query();
                     break;
@@ -83,8 +110,16 @@ public class PlayMusicService extends Service {
                     break;
             }
             this.setList(list);
-            this.setPostion(setting.getLast_music_pos());
+            int id = setting.getId();
+            for (int i=0;i<list.size();i++){
+                MusicItem item = list.get(i);
+                if (item.get_id()==id) {
+                    this.setPostion(setting.getLast_music_pos());
+                    break;
+                }
+            }
             this.setModel(setting.getLast_model());
+            this.seekTo(setting.getLast_music_sec());
         }
         mPlayer.setFlag(true);
     }
@@ -138,20 +173,30 @@ public class PlayMusicService extends Service {
         super.onDestroy();
         mPlayer.destroy();
         //stopForeground(true);
-        unregisterReceiver(stateReciver);
-        unregisterReceiver(musicControlReciver);
+        if (stateReciver!=null)
+            unregisterReceiver(stateReciver);
+        if (musicControlReciver!=null)
+            unregisterReceiver(musicControlReciver);
         NotificationManager manager = (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
         manager.cancel(1);
         stopForeground(true);
+        MusicDBHelper.getInstance(PlayMusicService.this).updateMusicRecord(getMusic(getCurrentDuration()).get_id(), listName, getCurrentDuration(), getMode());
     }
 
+    public int getListName(){
+        return listName;
+    }
+
+    public int getMode(){
+        return mPlayer.getModel();
+    }
     RemoteViews remoteViews;
-    public void showNotification(Context context,MusicItem item,int playing){
+    public void showNotification(Context context,MusicItem item,int playing,boolean showLrcAlert){
         NotificationManager manager = (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
 
-        manager.notify(1,getNotification(context,item,playing));
+        manager.notify(1,getNotification(context,item,playing,showLrcAlert));
     }
-    private Notification getNotification(Context context,MusicItem item,int playing){
+    private Notification getNotification(Context context,MusicItem item,int playing,boolean showLrcAlert){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         remoteViews = new RemoteViews(getPackageName(), R.layout.notification_custom);
         if (item!=null) {
@@ -162,6 +207,11 @@ public class PlayMusicService extends Service {
             }
             remoteViews.setTextViewText(R.id.tx_notification_title,item.getTitle());
             remoteViews.setTextViewText(R.id.tx_notification_artist,item.getArtist());
+        }
+        if (showLrcAlert){
+            remoteViews.setImageViewResource(R.id.iv_notification_lrc,R.mipmap.img_appwidget_minilyric_on);
+        }else{
+            remoteViews.setImageViewResource(R.id.iv_notification_lrc,R.mipmap.img_appwidget_minilyric_off);
         }
         Intent nextintent = new Intent();
         nextintent.setAction(Config.Broadcast.MUSIC_NEXT);
@@ -177,9 +227,14 @@ public class PlayMusicService extends Service {
         exitintent.setAction(Config.Broadcast.APP_EXIT);
         PendingIntent exitPIntent = PendingIntent.getBroadcast(this,Config.Code.REQ_MUSIC_EXIT,exitintent,PendingIntent.FLAG_UPDATE_CURRENT);
 
+        Intent lrctoggleIntent = new Intent();
+        lrctoggleIntent.setAction(Config.Broadcast.LRC_ALERT_TOGGLE);
+        PendingIntent lrcPIntent = PendingIntent.getBroadcast(this,Config.Code.REQ_MUSIC_LRC,lrctoggleIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
         remoteViews.setOnClickPendingIntent(R.id.iv_notification_next,nextPIntent);
         remoteViews.setOnClickPendingIntent(R.id.iv_notification_play,playPIntent);
         remoteViews.setOnClickPendingIntent(R.id.iv_notification_exit,exitPIntent);
+        remoteViews.setOnClickPendingIntent(R.id.iv_notification_lrc,lrcPIntent);
 
         builder.setSmallIcon(R.mipmap.img_notification_logo);
         builder.setContent(remoteViews);
@@ -190,6 +245,7 @@ public class PlayMusicService extends Service {
         notification.flags = Notification.FLAG_NO_CLEAR;
         return notification;
     }
+
     class StateReciver extends BroadcastReceiver{
 
         @Override
@@ -219,6 +275,7 @@ public class PlayMusicService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+
             if (action.equals(Config.Broadcast.MUSIC_NEXT)){
                 PlayMusicService.this.next();
             }else if (action.equals(Config.Broadcast.MUSIC_PLAY)){
@@ -233,11 +290,25 @@ public class PlayMusicService extends Service {
                 PlayMusicService.this.pause();
             }else if (action.equals(Config.Broadcast.MUSIC_PREVIOUS)){
                 PlayMusicService.this.previous();
+
             }else if(action.equals(Config.Broadcast.APP_EXIT)){
                 PlayMusicService.this.onDestroy();
                 return;
+            }else if(action.equals(Config.Broadcast.LRC_ALERT_TOGGLE)){
+                if (isShowAlertLrc){
+                    isShowAlertLrc = false;
+                    //lrcDialogUtil.setLrcList(getMusic(getCurrentPos()).getLrcpath());
+                    lrcDialogUtil.hideLrcDialog(PlayMusicService.this);
+                }else{
+                    isShowAlertLrc = true;
+                    lrcDialogUtil.showLrcDialog(PlayMusicService.this);
+                }
             }
-            showNotification(PlayMusicService.this,PlayMusicService.this.getMusic(getCurrentPos()), PlayMusicService.this.getPlaying());
+            if(isShowAlertLrc)
+                lrcDialogUtil.setLrcList(getMusic(getCurrentPos()).getLrcpath());
+            showNotification(PlayMusicService.this,PlayMusicService.this.getMusic(getCurrentPos()), PlayMusicService.this.getPlaying(),isShowAlertLrc);
+            MusicDBHelper.getInstance(PlayMusicService.this).updateMusicRecord(getMusic(getCurrentDuration()).get_id(),listName,getCurrentDuration(),getMode());
         }
     }
+
 }

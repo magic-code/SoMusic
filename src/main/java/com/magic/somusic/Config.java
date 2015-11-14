@@ -72,6 +72,7 @@ public class Config {
         public static final String MUSIC_PREVIOUS = "com.magic.somusic.music_previous";
         /**退出广播（notification）*/
         public static final String APP_EXIT = "com.magic.somusic.exit";
+        public static final String LRC_ALERT_TOGGLE = "com.magic.somusic.lrc_alert";
     }
     /**请求响应码*/
     public class Code{
@@ -81,6 +82,7 @@ public class Config {
         public static final int REQ_MUSIC_PREVIOUS = 4;
         public static final int REQ_MUSIC_EXIT = 0;
         public static final int REQ_TO_ACTIVITY = 5;
+        public static final int REQ_MUSIC_LRC = 6;
     }
     public static final int DOWNLOAD_INFO_SUS = 0x001;
     public static final int DOWNLOAD_INFO_ERR = 0x002;

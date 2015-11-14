@@ -51,14 +51,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_lrc"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-    </android.support.v4.view.ViewPager>
-    <!--<com.magic.somusic.ui.LrcMulityLineView-->
-        <!--android:id="@+id/mulline_lrcview"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
+        <com.magic.somusic.ui.PagerFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp_lrc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </android.support.v4.view.ViewPager>
+        </com.magic.somusic.ui.PagerFrameLayout>
+        <LinearLayout android:orientation="horizontal"
+            android:layout_gravity="bottom"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView android:id="@+id/lrc_frag_cur_duration"
+                style="@style/mid_font_white"
+                tools:text="02:50"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <SeekBar android:id="@+id/lrc_frag_seekbar"
+                android:focusable="true"
+                android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+            <TextView android:id="@+id/lrc_frag_total_duration"
+                style="@style/mid_font_white"
+                tools:text="4:51"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </FrameLayout>
+
+
 </LinearLayout>

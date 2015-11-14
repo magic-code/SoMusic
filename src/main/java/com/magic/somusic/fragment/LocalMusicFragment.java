@@ -21,6 +21,7 @@ import com.magic.somusic.R;
 import com.magic.somusic.adapter.LocalSongAdapter;
 import com.magic.somusic.db.MusicDBHelper;
 import com.magic.somusic.domain.MusicItem;
+import com.magic.somusic.ui.PinYinDragPanel;
 
 import java.util.ArrayList;
 import java.util.zip.Inflater;
@@ -28,6 +29,7 @@ import java.util.zip.Inflater;
 public class LocalMusicFragment extends Fragment {
 
     private ViewPager viewPager;
+    private PinYinDragPanel pinYinDragPanel;
     public LocalMusicFragment() {
         // Required empty public constructor
     }
@@ -41,10 +43,17 @@ public class LocalMusicFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_local_music,null);
+        final View view = inflater.inflate(R.layout.fragment_local_music,null);
         viewPager = (ViewPager) view.findViewById(R.id.vp_local_music);
         viewPager.setAdapter(new LocalPageAdapter(getActivity()));
         viewPager.setCurrentItem(0);
+        pinYinDragPanel = (PinYinDragPanel) view.findViewById(R.id.pp_list);
+        pinYinDragPanel.setOnLetterChangedListener(new PinYinDragPanel.OnLetterChangedListener() {
+            @Override
+            public void onLetterChangerListener(int pos, String letter) {
+
+            }
+        });
         return view;
     }
     private class LocalPageAdapter extends PagerAdapter{

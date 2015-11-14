@@ -32,6 +32,7 @@ import com.magic.somusic.services.PlayMusicService;
 import com.magic.somusic.services.ScanMusicService;
 import com.magic.somusic.ui.MyViewPager;
 import com.magic.somusic.ui.RoundProgressBar;
+import com.magic.somusic.ui.SlidingContentFrameLayout;
 import com.magic.somusic.ui.SlidingFrameLayout;
 
 import java.util.ArrayList;
@@ -51,8 +52,9 @@ public class MainActivity extends FragmentActivity {
 
     private LinearLayout main_control_panel;
     private SlidingFrameLayout slidingFrameLayout;
-    private LrcViewFragment slidingfragment;
-
+    private LrcViewFragment slidingfragment=null;
+    private MuiscChangeCallBack listener=null;
+    private SlidingContentFrameLayout contentFrameLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +84,7 @@ public class MainActivity extends FragmentActivity {
         mPlayPause = (ImageView) findViewById(R.id.iv_main_play);
         mPlayPause.setOnClickListener(new PlayAndPauseClickListener());
         vp_control = (MyViewPager) findViewById(R.id.vp_main_control);
+        contentFrameLayout = (SlidingContentFrameLayout) findViewById(R.id.main_content_frame);
         adapter = new SlideControlAdapter(this,musicService);
         vp_control.setOffscreenPageLimit(3);
         vp_control.setAdapter(adapter);
@@ -122,39 +125,45 @@ public class MainActivity extends FragmentActivity {
                 if (visbility) {
                     Log.e("--main", "----slidingmenu--open");
 
-                     slidingfragment = new LrcViewFragment();
+
                      FragmentManager fm = getSupportFragmentManager();
                      FragmentTransaction ft = fm.beginTransaction();
-                     if (!slidingfragment.isAdded()) {
-                          ft.add(slidingfragment, "lrc");
-                          ft.replace(R.id.slidingmenu_frame, slidingfragment);
-                          ft.addToBackStack(null);
-                          ft.commit();
-                     }
-
+                    if (slidingfragment!=null) {
+                        if (!slidingfragment.isAdded()) {
+                            ft.add(slidingfragment, "lrc");
+                        }
+                    }
+                    slidingfragment = new LrcViewFragment();
+                    ft.replace(R.id.slidingmenu_frame, slidingfragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
                 }else{
                     if (slidingfragment.isAdded()) {
                         FragmentManager fm = getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
                         ft.remove(slidingfragment);
                         ft.commit();
-                        slidingfragment.onDestroyView();
+                        slidingfragment.onDestroy();
+                        //slidingfragment = null;
                     }
                 }
             }
 
             @Override
             public void openstateChange(boolean open) {
-//                if (!open){
-//                    if (slidingfragment!=null){
-//                        if(slidingfragment.isAdded()){
-//                            FragmentManager fm = getSupportFragmentManager();
-//                            FragmentTransaction ft = fm.beginTransaction();
-//                            ft.remove(slidingfragment);
-//                            ft.commit();
-//                        }
-//                    }
-//                }
+                contentFrameLayout.setSlidingState(open);
+                if (!open){
+                    if (slidingfragment!=null){
+                        if(slidingfragment.isAdded()){
+                            FragmentManager fm = getSupportFragmentManager();
+                            FragmentTransaction ft = fm.beginTransaction();
+                            ft.remove(slidingfragment);
+                            ft.commit();
+                            slidingfragment.onDestroy();
+                           // slidingfragment=null;
+                        }
+                    }
+                }
             }
         });
     }
@@ -287,13 +296,19 @@ public class MainActivity extends FragmentActivity {
         MusicItem pItem = musicService.getMusic(pos - 1);
         MusicItem nItem = musicService.getMusic(pos+1);
         MusicItem cItem = musicService.getMusic(pos);
-        cTitle.setText(cItem.getTitle());
-        cArtist.setText(cItem.getArtist());
+        if (cItem!=null) {
+            cTitle.setText(cItem.getTitle());
+            cArtist.setText(cItem.getArtist());
+        }
+        if (pItem != null) {
+            pTitle.setText(pItem.getTitle());
+            pArtist.setText(pItem.getArtist());
 
-        pTitle.setText(pItem.getTitle());
-        pArtist.setText(pItem.getArtist());
-        nTitle.setText(nItem.getTitle());
-        nArtist.setText(nItem.getArtist());
+        }
+        if (nItem != null) {
+            nTitle.setText(nItem.getTitle());
+            nArtist.setText(nItem.getArtist());
+        }
     }
     class MusicChangeReciver extends BroadcastReceiver{
         @Override
@@ -301,6 +316,9 @@ public class MainActivity extends FragmentActivity {
              //MusicItem item = musicService.getMusic(musicService.getCurrentPos());
             //txTitle.setText(item.getTitle());
             //txArtist.setText(item.getArtist());
+            if (listener != null) {
+                listener.musicChange();
+            }
             if (musicService.getPlaying()==Config.PlayState.STATE_PLAYING){
                 mPlayPause.setImageResource(R.mipmap.img_appwidget_pause);
             }else{
@@ -319,5 +337,11 @@ public class MainActivity extends FragmentActivity {
             stopService(intentService);
             MainActivity.this.finish();
         }
+    }
+    public void setMusicChangeListener(MuiscChangeCallBack listener){
+        this.listener = listener;
+    }
+    public interface MuiscChangeCallBack{
+        public void musicChange();
     }
 }

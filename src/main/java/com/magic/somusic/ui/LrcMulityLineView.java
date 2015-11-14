@@ -10,6 +10,7 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -83,10 +84,22 @@ public class LrcMulityLineView extends View {
     private TextPaint textPaint = new TextPaint();
     private float downY=0;
     private boolean isPlaying = false;
+    private boolean flag = true;
+    private Thread thread=null;
+    private float downx;
+    private float downtime;
+    private float presstime=0;
 
     public void setLrcRows(ArrayList<LrcRow> list){
         this.list = list;
-        moveHighLight();
+        postInvalidate();
+        flag = false;
+        flag = true;
+        delay=-1;
+        if (list!=null && list.size()>0) {
+            mHighLightRow=0;
+            moveHighLight();
+        }
     }
 
     public LrcMulityLineView(Context context) {
@@ -111,15 +124,21 @@ public class LrcMulityLineView extends View {
     }
 
     public void moveHighLight(){
-        new Thread(new Runnable() {
+//        if (thread!=null)
+//            return;
+        thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(true) {
+                while(flag && list!=null && list.size()>0) {
                     if (isPlaying) {
                         if (delay == -1) {
                             int time = list.get(mHighLightRow).time;
-                            int ntime = list.get(mHighLightRow + 1).time;
-                            delay = (int) ((ntime - time) / (mRowPadding + mRowFontSize));
+                            int ntime = 0;
+                            if (mHighLightRow!=list.size()-1)
+                                ntime = list.get(mHighLightRow + 1).time;
+                            else
+                                ntime = time+2000;
+                            delay = (int) ((ntime - time) / (mRowPadding+mRowFontSize));
                         }
                         highLightRowY -= 1;
                         try {
@@ -130,7 +149,8 @@ public class LrcMulityLineView extends View {
                     }
                 }
             }
-        }).start();
+        });
+        thread.start();
     }
 
     @Override
@@ -149,7 +169,7 @@ public class LrcMulityLineView extends View {
         }
         int rowX= width/2;
         if (highLightRowY<=0)
-            highLightRowY = height/2-mHighLightFontSize;
+            highLightRowY = height/2+mRowFontSize;
 
         //显示 高亮的行
         String highLightContent = list.get(mHighLightRow).content;
@@ -172,12 +192,12 @@ public class LrcMulityLineView extends View {
         if (mViewMode==SEEK_MODE){
             mPaint.setColor(mSeekLineColor);
             mPaint.setStrokeWidth(mSeekLineWidth);
-            canvas.drawLine(mSeekLinePaddingX,height/2-mHighLightFontSize,width,height/2-mHighLightFontSize,mPaint);
+            canvas.drawLine(mSeekLinePaddingX,height/2,width-mSeekLinePaddingX,height/2,mPaint);
 
             mPaint.setColor(mSeekTimeFontColor);
             mPaint.setTextSize(mSeekTimeFontSize);
             mPaint.setTextAlign(Paint.Align.LEFT);
-            canvas.drawText(list.get(mHighLightRow).stime.substring(0,5),mSeekLinePaddingX,height/2-mHighLightFontSize-mSeekTimeFontSize,mPaint);
+            canvas.drawText(list.get(mHighLightRow).stime.substring(0,5),mSeekLinePaddingX,height/2-mSeekTimeFontSize,mPaint);
         }
         //显示高亮部分上方的歌词
         mRowNum = mHighLightRow - 1;
@@ -196,9 +216,10 @@ public class LrcMulityLineView extends View {
 //            canvas.translate(rowX,rowY);
 //            layout.draw(canvas);
 //            canvas.restore();
+
             canvas.drawText(txt,rowX,rowY,mPaint);
-            mRowNum--;
             rowY = rowY-mRowPadding-mRowFontSize;
+            mRowNum--;
         }
         //显示高亮部分下方的歌词
         mRowNum = mHighLightRow+1;
@@ -219,31 +240,40 @@ public class LrcMulityLineView extends View {
 
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                downY = event.getRawY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (mViewMode==NORMAL_MODE){
-                    mViewMode = SEEK_MODE;
-                    highLightRowY+=(event.getRawY()-downY);
-                    if (highLightRowY<=getHeight()/2-mRowPadding-mHighLightFontSize){
-                        mHighLightRow +=1;
-                    }else if(highLightRowY>= getHeight()/2+mRowPadding+mHighLightFontSize){
-                        mHighLightRow-=1;
-                    }
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                if (mViewMode==SEEK_MODE){
-                    mViewMode = NORMAL_MODE;
-                }
-                break;
-        }
-        return super.onTouchEvent(event);
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        switch (event.getAction()){
+//            case MotionEvent.ACTION_DOWN:
+//                downY = event.getRawY();
+//                downx = event.getRawX();
+//                downtime = event.getDownTime();
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                float absy = Math.abs(downY-event.getRawY());
+//                float absx = Math.abs(downx-event.getRawX());
+//                if (absx>10 || absy>10)
+//                    presstime = event.getEventTime()-downtime;
+//                if (presstime>500) {
+//                    mViewMode = SEEK_MODE;
+//                    if (mHighLightRow > 0 || mHighLightRow < list.size() - 1)
+//                        highLightRowY += (event.getRawY() - downY);
+//                    if (highLightRowY <= getHeight() / 2 - mRowPadding - mHighLightFontSize) {
+//                        mHighLightRow += 1;
+//                    } else if (highLightRowY >= getHeight() / 2 + mRowPadding + mHighLightFontSize) {
+//                        mHighLightRow -= 1;
+//                    }
+//                }
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                mViewMode = NORMAL_MODE;
+//                break;
+//        }
+//        if (presstime>500)
+//            return true;
+//        if (presstime!=0)
+//            return false;
+//        return true;
+//    }
     public void setPlaying(boolean isPlaying){
         this.isPlaying = isPlaying;
     }
@@ -251,21 +281,21 @@ public class LrcMulityLineView extends View {
     public void setPos(int pos){
         if (list!=null && list.size()>0){
             for (int i=0;i<list.size();i++){
-                if (i!=list.size()-1) {
+                if (i<list.size()-1) {
                     int time = list.get(i+1).time;
                     if (time>pos) {
                         if (mHighLightRow!=i){
                             delay=-1;
-                            highLightRowY = height/2-mHighLightFontSize;
+                            highLightRowY = height/2+mRowFontSize;
                         }
                         mHighLightRow = i;
                         postInvalidate();
                         return;
                     }
-                }else if (i==list.size()){
+                }else{
                     if (mHighLightRow!=i-1) {
-                        delay = -1;
-                        highLightRowY = height / 2 - mHighLightFontSize;
+                        //delay = -1;
+                        //highLightRowY = height/2+mRowFontSize;
                     }
                     mHighLightRow = list.size()-1;
                     postInvalidate();

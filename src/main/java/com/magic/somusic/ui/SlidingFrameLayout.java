@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -41,6 +42,7 @@ public class SlidingFrameLayout extends FrameLayout{
     public SlidingFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
+
 
 
     @Override
@@ -130,8 +132,8 @@ public class SlidingFrameLayout extends FrameLayout{
         float x = event.getRawX();
         float y = event.getRawY();
         if (interceptFlag) {
-            switch (action) {
 
+            switch (action) {
                 case MotionEvent.ACTION_MOVE:
                     float offset = downy - y;
                     if (offset>0 && oldoffset<=0){
@@ -184,7 +186,7 @@ public class SlidingFrameLayout extends FrameLayout{
                     break;
             }
         }
-        return true;
+        return super.onTouchEvent(event);
     }
     public void openMenu(){
         slidingView.setTranslationY(0);
@@ -206,4 +208,5 @@ public class SlidingFrameLayout extends FrameLayout{
         public void visbilityChange(boolean visbility);
         public void openstateChange(boolean open);
     }
+
 }

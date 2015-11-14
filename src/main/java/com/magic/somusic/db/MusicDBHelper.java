@@ -76,7 +76,7 @@ public class MusicDBHelper extends SQLiteOpenHelper {
 
     public ArrayList<MusicItem> query(){
         SQLiteDatabase db =  _instance.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_LOCAL_LIST,null,null,null, null, null, null);
+        Cursor cursor = db.query(TABLE_LOCAL_LIST, null, null, null, null, null, null);
         ArrayList<MusicItem> list=null;
         if(cursor!=null) {
             list = new ArrayList<MusicItem>();
@@ -136,8 +136,27 @@ public class MusicDBHelper extends SQLiteOpenHelper {
         values.put("last_model",setting.getLast_model());
         values.put("id",setting.getId());
         values.put("first_install",setting.getFirst_install());
-        db.update(TABLE_SET_NAME,values,"id=?",new String[]{1+""});
+        db.update(TABLE_SET_NAME, values, "id=?", new String[]{1 + ""});
         db.close();
+    }
+    public void updateMusicRecord(int id,int list,int sec,int model){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("last_music_id",id);
+        values.put("last_music_sec",sec);
+        values.put("last_list",list);
+        values.put("last_model",model);
+        db.update(TABLE_SET_NAME,values,null,null);
+        db.close();
+    }
+    public int getLocalCount(){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM "+TABLE_LOCAL_LIST,null);
+        if (cursor!=null){
+            cursor.moveToNext();
+            return  cursor.getInt(0);
+        }
+        return 0;
     }
     public AppSetting getSetting(){
         SQLiteDatabase db = getWritableDatabase();

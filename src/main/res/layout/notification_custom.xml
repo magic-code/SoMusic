@@ -23,6 +23,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         </LinearLayout>
+    <ImageView android:id="@+id/iv_notification_lrc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/img_appwidget_minilyric_off"
+        android:paddingLeft="15dp"/>
     <ImageView android:id="@+id/iv_notification_play"
         android:paddingLeft="15dp"
         android:src="@mipmap/img_appwidget_play"

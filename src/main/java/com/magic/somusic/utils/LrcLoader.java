@@ -112,8 +112,18 @@ public class LrcLoader {
         return ti;
     }
 
+    public static String convertTime(int dur){
+        int m = dur/1000/60;
+        int s = (dur/1000)%60;
+        String sm = m<10 ? "0"+m:""+m;
+        String ss = s<10 ? "0"+s:""+s;
+        return  sm+":"+ss;
+    }
+
     public String getFileContent(String filename){
         String str=null;
+        if (filename==null)
+            return  str;
         StringBuilder sb = new StringBuilder();
 
             File lrcFile = new File(filename);

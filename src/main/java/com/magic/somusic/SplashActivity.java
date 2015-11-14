@@ -30,7 +30,7 @@ public class SplashActivity extends Activity {
             super.handleMessage(msg);
 
             musicService.initServ();
-            musicService.showNotification(musicService,musicService.getMusic(musicService.getCurrentPos()), musicService.getPlaying());
+            musicService.showNotification(musicService,musicService.getMusic(musicService.getCurrentPos()), musicService.getPlaying(),musicService.isShowAlertLrc);
             SplashActivity.this.sendBroadcast(new Intent(Config.Broadcast.MUSIC_CHANGE));
             Intent intent = new Intent(SplashActivity.this,MainActivity.class);
             unbindService(conn);

@@ -36,7 +36,14 @@ public class Player {
     public void setList(ArrayList<MusicItem> list){
         this.list = list;
     }
-    public void setPosition(int position){this.position = position;}
+
+    public void setPosition(int position){
+        this.position = position;
+        if (playing==Config.PlayState.STATE_PLAYING){
+            mediaPlayer.reset();
+        }
+        mediaPlayer = MediaPlayer.create(context, Uri.parse("file://"+list.get(position).getFilename()));
+    }
     public static Player getPlayer(Context context){
         mPlayer.context = context;
         return mPlayer;
@@ -118,7 +125,7 @@ public class Player {
             musicItem = list.get(position);
             if (mediaPlayer!=null)
                 mediaPlayer.reset();    //先停止上一首
-            play(context,list,position);
+            play(context, list, position);
         }
         return musicItem;
     }
@@ -185,7 +192,7 @@ public class Player {
      * @param section 为-1表示取当前位置的音乐
      * */
     public MusicItem getMusic(Integer section){
-        if(list!=null) {
+        if(list!=null && list.size()>0) {
             if (section == -5){
                 return list.get(position);
             }
@@ -198,7 +205,7 @@ public class Player {
         return null;
     }
     /**获取当前播放音乐的位置时间*/
-    public int getCurrentDuration(){
+    public synchronized int getCurrentDuration(){
         if (mediaPlayer!=null){
             return mediaPlayer.getCurrentPosition();
         }
@@ -218,4 +225,19 @@ public class Player {
     public int getPos() {
         return position;
     }
+
+    public void updateLrc(int musicId, String lrcPath) {
+        if (list!=null){
+            for(int i=0;i<list.size();i++){
+                MusicItem item = list.get(i);
+                if (item.get_id()==musicId){
+                    item.setLrcpath(lrcPath);
+                    list.set(i,item);
+                    break;
+                }
+            }
+        }
+    }
+
+
 }
