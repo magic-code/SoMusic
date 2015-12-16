@@ -20,11 +20,11 @@ public class MusicDBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME="somusic";
     private static final String TABLE_SET_NAME = "somusic_set";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     private static final String TABLE_LOCAL_LIST = "local_list";
     private static final String CREATE_TABLE_LOCAL_LIST="CREATE TABLE "+TABLE_LOCAL_LIST+" (_id INTEGER PRIMARY KEY" +
             ",title VARCHAR(100),duration INTEGER,artist VARCHAR(50),album VARCHAR(100)," +
-            "filename VARCHAR(100),collect INTEGER,lrcpath VARCHAR(100),imagepath VARCHAR(100))";
+            "filename VARCHAR(100),collect INTEGER,lrcpath VARCHAR(100),imagepath VARCHAR(100),letterTitle varchar(50),letterArtist varchar(50))";
     private static final String CREATE_TABLE_SET = "CREATE TABLE "+TABLE_SET_NAME+" (id INTEGER PRIMARY KEY"+
             ",last_list INTEGER,last_music_pos INTEGER,last_music_id INTEGER,last_music_sec INTEGER" +
             ",last_model INTEGER,first_install INTEGER)";
@@ -69,6 +69,8 @@ public class MusicDBHelper extends SQLiteOpenHelper {
             content.put("collect", item.getCollect());
             content.put("imagepath",item.getImagepath());
             content.put("lrcpath",item.getLrcpath());
+            content.put("letterTitle",item.getLetterTitle());
+            content.put("letterArtist",item.getLetterArtist());
             db.insert(TABLE_LOCAL_LIST, null, content);
             db.close();
         }
@@ -91,6 +93,9 @@ public class MusicDBHelper extends SQLiteOpenHelper {
                 String album = cursor.getString(cursor.getColumnIndex("album"));
                 String lrcpath = cursor.getString(cursor.getColumnIndex("lrcpath"));
                 String imagepath = cursor.getString(cursor.getColumnIndex("imagepath"));
+                String letterTitle = cursor.getString(cursor.getColumnIndex("letterTitle"));
+                String letterArtist = cursor.getString(cursor.getColumnIndex("letterArtist"));
+
                 item.set_id(id);
                 item.setTitle(title);
                 item.setArtist(artist);
@@ -100,6 +105,8 @@ public class MusicDBHelper extends SQLiteOpenHelper {
                 item.setCollect(collecte);
                 item.setLrcpath(lrcpath);
                 item.setImagepath(imagepath);
+                item.setLetterTitle(letterTitle);
+                item.setLetterArtist(letterArtist);
                 list.add(item);
             }
         }
@@ -160,7 +167,7 @@ public class MusicDBHelper extends SQLiteOpenHelper {
     }
     public AppSetting getSetting(){
         SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.query(TABLE_SET_NAME,null,null,null,null,null,null);
+        Cursor cursor = db.query(TABLE_SET_NAME, null, null, null, null, null, null);
         AppSetting appSetting=null;
         while (cursor.moveToNext()){
             int id = cursor.getInt(cursor.getColumnIndex("id"));
@@ -175,5 +182,14 @@ public class MusicDBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return appSetting;
+    }
+
+    public void collection(int id, boolean b) {
+        SQLiteDatabase db = getWritableDatabase();
+        int coll = b ? Config.CollecteState.STATE_COLLECTED:Config.CollecteState.STATE_NOT_COLLECTED;
+        ContentValues values = new ContentValues();
+        values.put("collect",coll);
+        db.update(TABLE_LOCAL_LIST,values,"_id=?",new String[]{id+""});
+        db.close();
     }
 }

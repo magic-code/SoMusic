@@ -65,6 +65,7 @@ public class PinYinDragPanel extends View {
     private OnLetterChangedListener listener = null;
     private View view;
     private TextView txt;
+    private boolean onPanel = false;
 
     public PinYinDragPanel(Context context) {
         super(context);
@@ -151,14 +152,20 @@ public class PinYinDragPanel extends View {
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
         if (action==MotionEvent.ACTION_UP) {
+            onPanel = false;
 //            if (window != null) {
 //                window.dismiss();
 //            }
             if (view!=null)
                 view.setVisibility(INVISIBLE);
+            if (listener!=null)
+                listener.onStateChangeListener(false);
         }else{
+
             float y = event.getY();
             int temp = (int)(y/perHeigh);
+            if (temp>=chars.length)
+                temp=chars.length-1;
             if (temp!=curPos){
                 if (listener!=null){
                     listener.onLetterChangerListener(temp,chars[temp]);
@@ -167,6 +174,9 @@ public class PinYinDragPanel extends View {
             }
             postInvalidate();
             showDialog(curPos);
+            if (listener!=null && !onPanel)
+                listener.onStateChangeListener(true);
+            onPanel = true;
         }
         return true;
     }
@@ -180,10 +190,25 @@ public class PinYinDragPanel extends View {
 //        window.setContentView(view);
 //        window.showAtLocation(root, Gravity.CENTER,0,0);
     }
+
+    public void setPos(String l) {
+        l = l.toUpperCase();
+        char c = l.charAt(0);
+        if (c>=65 && c<=90){
+            Log.e("ping",c+"+++++++++++++");
+            curPos = c-65;
+        }else{
+            this.curPos = chars.length-1;
+        }
+        postInvalidate();
+    }
+
     public interface OnLetterChangedListener{
         public void onLetterChangerListener(int pos,String letter);
+        public void onStateChangeListener(boolean onPanel);
     }
     public void setOnLetterChangedListener(OnLetterChangedListener listener){
         this.listener = listener;
     }
+
 }

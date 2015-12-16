@@ -56,6 +56,11 @@ public class PlayMusicService extends Service {
         mPlayer.updateLrc(musicId,lrcPath);
     }
 
+    public void updateCollection(int id, boolean b) {
+        mPlayer.updateCollection(id,b);
+        MusicDBHelper.getInstance(this).collection(id,b);
+    }
+
     public class LocalService extends Binder{
         public PlayMusicService getService(){
             return PlayMusicService.this;
@@ -114,12 +119,13 @@ public class PlayMusicService extends Service {
             for (int i=0;i<list.size();i++){
                 MusicItem item = list.get(i);
                 if (item.get_id()==id) {
-                    this.setPostion(setting.getLast_music_pos());
+                    this.setPostion(i);
                     break;
                 }
             }
             this.setModel(setting.getLast_model());
             this.seekTo(setting.getLast_music_sec());
+            sendBroadcast(new Intent(Config.Broadcast.MUSIC_CHANGE));
         }
         mPlayer.setFlag(true);
     }

@@ -102,6 +102,7 @@ public class LrcViewFragment extends Fragment {
     private ImageView twoIvPrev;
     private ImageView twoIvPlay;
     private ImageView twoIvNext;
+    private ImageView ivCollection;
 
 
     @Override
@@ -126,7 +127,8 @@ public class LrcViewFragment extends Fragment {
         twoLrcLayout = inflater.inflate(R.layout.two_line_lrc_layout,null);
         mulLrcView = (LrcMulityLineView) mulLrcLayout.findViewById(R.id.mulline_lrcview);
         twoLrcView = (TwoLinesLrcView)twoLrcLayout.findViewById(R.id.lrc_fragment_two_line);
-
+        iv_collection = (ImageView) view.findViewById(R.id.lrc_action_collection);
+        iv_collection.setOnClickListener(new CollectionClickListener());
         mulIvPrev = (ImageView)mulLrcLayout.findViewById(R.id.mullrc_prev);
         mulIvPlay = (ImageView)mulLrcLayout.findViewById(R.id.mullrc_play);
         mulIvNext = (ImageView)mulLrcLayout.findViewById(R.id.mullrc_next);
@@ -170,6 +172,20 @@ public class LrcViewFragment extends Fragment {
         //initComponent(view);
 
         return view;
+    }
+    /**点击收藏按钮*/
+    private class CollectionClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            MusicItem item = musicService.getMusic(musicService.getCurrentPos());
+            if (item.getCollect()==Config.CollecteState.STATE_NOT_COLLECTED) {
+                musicService.updateCollection(item.get_id(),true);
+                iv_collection.setBackgroundResource(R.mipmap.collection_true);
+            }else{
+                musicService.updateCollection(item.get_id(),false);
+                iv_collection.setBackgroundResource(R.mipmap.collection_false);
+            }
+        }
     }
     class ControlMusicOnClickListener implements View.OnClickListener{
 

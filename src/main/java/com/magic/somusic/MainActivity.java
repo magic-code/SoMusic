@@ -64,9 +64,9 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         //MusicDBHelper.getInstance(this).getWritableDatabase();
         //透明状态栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        //透明导航栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        //透明导航栏
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         toMainFragment();
 
         Intent intent = new Intent();

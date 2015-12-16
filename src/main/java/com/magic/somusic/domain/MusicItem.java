@@ -13,7 +13,25 @@ public class MusicItem {
     private int collect;
     private String lrcpath;
     private String imagepath;
+    private String letterTitle;
 
+    public String getLetterArtist() {
+        return letterArtist;
+    }
+
+    public void setLetterArtist(String letterArtist) {
+        this.letterArtist = letterArtist;
+    }
+
+    public String getLetterTitle() {
+        return letterTitle;
+    }
+
+    public void setLetterTitle(String letterTitle) {
+        this.letterTitle = letterTitle;
+    }
+
+    private String letterArtist;
     public String getLrcpath() {
         return lrcpath;
     }

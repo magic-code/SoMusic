@@ -9,6 +9,7 @@ import android.util.Log;
 import com.magic.somusic.Config;
 import com.magic.somusic.db.MusicDBHelper;
 import com.magic.somusic.domain.MusicItem;
+import com.magic.somusic.utils.Pinyin4jUtil;
 
 /**
  * 扫描音乐
@@ -55,6 +56,8 @@ public class ScanMusicService extends IntentService {
                     music.setCollect(Config.CollecteState.STATE_NOT_COLLECTED);//初始化为 未收藏
                     music.setLrcpath("");
                     music.setImagepath("");
+                    music.setLetterTitle(Pinyin4jUtil.getPinYin(title).toLowerCase());
+                    music.setLetterArtist(Pinyin4jUtil.getPinYin(artist).toLowerCase());
                     MusicDBHelper.getInstance(this).save(music);
                     count++;
                 }

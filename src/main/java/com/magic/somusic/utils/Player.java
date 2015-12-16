@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 
 import com.magic.somusic.Config;
+import com.magic.somusic.db.MusicDBHelper;
 import com.magic.somusic.domain.MusicItem;
 
 import java.io.IOException;
@@ -39,10 +40,10 @@ public class Player {
 
     public void setPosition(int position){
         this.position = position;
-        if (playing==Config.PlayState.STATE_PLAYING){
-            mediaPlayer.reset();
-        }
-        mediaPlayer = MediaPlayer.create(context, Uri.parse("file://"+list.get(position).getFilename()));
+//        if (playing==Config.PlayState.STATE_PLAYING){
+//            mediaPlayer.reset();
+//        }
+//        mediaPlayer = MediaPlayer.create(context, Uri.parse("file://"+list.get(position).getFilename()));
     }
     public static Player getPlayer(Context context){
         mPlayer.context = context;
@@ -240,4 +241,14 @@ public class Player {
     }
 
 
+    public void updateCollection(int id, boolean b) {
+        MusicItem item = list.get(position);
+        if (b) {
+            item.setCollect(Config.CollecteState.STATE_COLLECTED);
+            list.set(position, item);
+        } else {
+            item.setCollect(Config.CollecteState.STATE_NOT_COLLECTED);
+        }
+        list.set(position, item);
+    }
 }

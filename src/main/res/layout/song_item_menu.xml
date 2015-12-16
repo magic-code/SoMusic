@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#c00000ff"
+    android:orientation="horizontal"
+    android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:id="@+id/ll_menu_collect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView android:src="@mipmap/collection_false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView android:text="@string/collect"
+            style="@style/min_font_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical"
+        android:gravity="center"
+        android:id="@+id/ll_menu_delete"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView android:src="@mipmap/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView android:text="@string/delete"
+            style="@style/min_font_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical"
+        android:gravity="center"
+        android:id="@+id/ll_menu_alerm"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView android:src="@mipmap/img_recognizer_song"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView android:text="@string/setAlerm"
+            style="@style/min_font_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>
